@@ -22,7 +22,6 @@ Okręg:
 	-Wybierana jest liczba posłów (mandatów) do parlamentu równa 1/10 * <liczba wyborców w okręgu>
 
 Partia:
-	-Należy tylko do jednego okręgu.
 	-Wystawia dokładnie tylu kandydatów, ile jest mandatów w okręgu.
 	-Każda ma określony budżet na kampanię wyborczą.
 
@@ -39,7 +38,7 @@ Partia:
 
 Kandydat:
 	-Należy tylko do jednej partii.
-	-Startuje tylko w okręgu swojej partii.
+	-Startuje tylko w jednym okręgu wyborczym.
 
 	-Ma atrybuty:
 		-imię
@@ -70,7 +69,7 @@ Wyborca:
 		-Wszechstronny:
 			-Liczy średnią ważoną cech dla każdego z kandydatów, przypisując każdej z jego cech całkowite wagi (które zawsze powinny być z przedziału -100 do 100) ze swojego wektora wag, a następnie dokonuje wyboru maksymalizując średnią ważoną.
 
-		-Istnieją także wyborcy, którzy działają zgodnie z jedną ze strategii z punktów 	3,4,5, ale przy dokonywaniu wyboru ograniczają się do jednej partii.
+		-Istnieją także wyborcy, którzy działają zgodnie z jedną ze strategii z punktów 3,4,5, ale przy dokonywaniu wyboru ograniczają się do jednej partii.
 
 Zamiana głosów na mandaty:
 	-Głosy wszystkich wyborców z danego okręgu są sumowane i zamieniane na mandaty.
@@ -100,7 +99,8 @@ Działanie w trakcie kampanii:
 Wczytywanie danych
 ###################
 
-Wszystko jest wczytywane z plików wejściowych
+Wszystko jest wczytywane z plików wejściowych.
+Nazwa pliku to jedyny argument programu.
 
 Format pliku wejściowego:
 
