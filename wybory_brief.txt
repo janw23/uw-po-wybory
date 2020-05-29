@@ -1,0 +1,169 @@
+##############################################################
+Plik z najważniejszymi informacjami z treści zadania "Wybory"
+##############################################################
+
+Cel to symulacja procesu wyborczego:
+	Dla każdej metody zmiany głosów na mandaty:
+		1. Formowanie okręgów wyborczych.
+		2. Kampania wyborcza.
+		3. Głosowanie.
+		4. Przeliczanie głosów na mandaty.
+
+
+Bajtocja jest podzielona na n podstawowych okręgów wyborczych 1,2,3,...,n.
+
+Okręg:
+	-Ma określoną liczbę wyborców postaci 10k.
+
+	-Może być łączony z innymi:
+		-Tylko z tymi o sąsiednich numerach.
+		-Tylko z jednym innym (nie można iterować łączeń).
+
+	-Wybierana jest liczba posłów (mandatów) do parlamentu równa 1/10 * <liczba wyborców w okręgu>
+
+Partia:
+	-Należy tylko do jednego okręgu.
+	-Wystawia dokładnie tylu kandydatów, ile jest mandatów w okręgu.
+	-Każda ma określony budżet na kampanię wyborczą.
+
+	-Ma strategię prowadzenia Kampanii Wyborczej:
+		-Z rozmachem:
+			-Zawsze wybiera najdroższe działanie, jakie może wykonać.
+		-Skromnie:
+			-Zawsze wybiera najtańsze działanie.
+		-Zachłannie:
+			-Wybiera działanie, które w największym stopniu zwiększy sumę średnich ważonych cech swoich kandydatów w danym okręgu wyborczym.
+		-<Jedna stworzona przeze mnie>:
+			-Założenie pełnej wiedzy o wagach cech wyborców, podziale na okręgi, aktualnej metodzie przeliczania głosów na mandaty.
+
+
+Kandydat:
+	-Należy tylko do jednej partii.
+	-Startuje tylko w okręgu swojej partii.
+
+	-Ma atrybuty:
+		-imię
+		-nazwisko
+		-partia, do której należy
+		-okręg, do którego należy
+		-numer na liście wyborczej swojej partii
+		-pewną liczbę cech, których wartości są całkowite z przedziału [-100, 100].
+
+Wyborca:
+	-Może głosować tylko na kandydatów z partii w swoim okręgu.
+	-Każdy zawsze głosuje i oddaje ważny głos.
+	-Głosuje na dokładnie jednego kandydata.
+
+	-Typy wyborców:
+		-Żelazny elektorat partyjny:
+			-Zawsze głosuje na losowego kandydata z danej partii.
+
+		-Żelazny elektorat kandydata:
+			-Zawsze głosuje na danego kandydata.
+
+		-Minimalizujący jednocechowy:
+			-Wybiera tego spośród kandydatów wszystkich partii, który ma najniższy poziom wybranej przez niego cechy (jeśli taką wartość ma więcej niż 1 kandydat, to wybór kandydata jest losowy).
+
+		-Maksymalizujący jednocechowy:
+			-wybiera tego spośród kandydatów wszystkich partii, który ma najwyższy poziom wybranej przez niego cechy (jeśli taką wartość ma więcej niż 1 kandydat, to wybór kandydata jest losowy).
+
+		-Wszechstronny:
+			-Liczy średnią ważoną cech dla każdego z kandydatów, przypisując każdej z jego cech całkowite wagi (które zawsze powinny być z przedziału -100 do 100) ze swojego wektora wag, a następnie dokonuje wyboru maksymalizując średnią ważoną.
+
+		-Istnieją także wyborcy, którzy działają zgodnie z jedną ze strategii z punktów 	3,4,5, ale przy dokonywaniu wyboru ograniczają się do jednej partii.
+
+Zamiana głosów na mandaty:
+	-Głosy wszystkich wyborców z danego okręgu są sumowane i zamieniane na mandaty.
+
+	-Metoda zamiany głosów na mandaty losowana jest (w samym programie tak naprawdę nie jest) przed rozpoczęciem kampanii wyborczej:
+		-Metoda D'Hondta
+		-Metoda Sainte-Lague
+		-Metoda Hare'a-Niemeyera
+
+Kampania wyborcza:
+	-Partie znają preferencje wyborców i wiedzą z jakich oni są okręgów.
+	-Partie za pieniądze z budżetu na kampanię mogą podejmować działania oddziałujące na wyborców.
+	-Partie podejmują działania tak długo, jak wystarcza im budżet.
+
+
+Działanie w trakcie kampanii:
+	-Każde działanie może zostać za jednym razem wykonane tylko w jednym wybranym okręgu.
+
+	-Koszt poniesiony za działanie jest równy:
+		<suma wartości bezwzględnych wektora zmiany wag> * <liczba wyborców w okręgu>
+
+	-Ma atrybuty:
+		-Cenę
+		-Opis, będący wektorem zmiany cech preferencji wyborcy o wartość całkowitą [-z, z] (nie przekraczając ograniczenia wartości wag).
+
+###################
+Wczytywanie danych
+###################
+
+Wszystko jest wczytywane z plików wejściowych
+
+Format pliku wejściowego:
+
+ -Pierwszy wiersz:
+	 -zawiera cztery liczby oddzielone spacją:
+		-n - liczba podstawowych okręgów wyborczych (ze zbioru {5,6, …, 100})
+		-p - liczba partii (ze zbioru {1,2,...,20})
+		-d - liczba możliwych działań (ze zbioru {1,2,3,...,15})
+		-c - liczba cech kandydatów (ze zbioru {5,6,7,...,100})
+
+	-Drugi wiersz:
+	 	-zawiera liczbę par podstawowych okręgów wyborczych, które należy scalić (jest to liczba ze zbioru {0,1,....,⌊n/2⌋}), a następnie (po spacji) tyle właśnie par postaci (o,o+1), gdzie o i o+1 to identyfikatory okręgów (liczby ze zbioru {1,2,3,....,n}), ponieważ scalanie nie jest iterowane, więc dany okręg może wystąpić co najwyżej w 1 parze (pojedyncza para jest reprezentowana jako napis, np. “(o,o+1)”, a pary są oddzielone spacją)
+
+	-Trzeci wiersz:
+		-zawiera p nazw partii (przyjmujemy, że nazwa partii jest zawsze jednym wyrazem, a nazwy są oddzielone spacją)
+
+ 	-Czwarty wiersz:
+ 		-zawiera p liczb b1, b2, …, bp, określających budżety poszczególnych partii, mogą być to dowolne dodatnie liczby całkowite (mieszczące się w granicy zakresu Integer), kolejność jest taka sama jak w wierszu powyżej
+
+ 	-Piąty wiersz:
+ 		-składa się z p znaków (oddzielonych spacjami) ze zbioru {‘’R’,’S’,’W’,’Z’}, odpowiadających strategiom poszczególnych partii (kolejność jest taka sama jak w wierszu powyżej):
+ 			-‘R’ - partia działa “z rozmachem”
+	 		-‘S’ - partia działa “skromnie”
+ 			-‘W’ - partia korzysta z dodatkowej strategii zaimplementowanej przez Ciebie
+ 			-‘Z’ - partia działa “zachłannie”
+
+	-Szósty wiersz:
+		-zawiera n liczb postaci 10k (gdzie k może być liczbą ze zbioru {1,2,3,....,100}) - są to liczby wyborców w każdym podstawowym okręgu wyborczym (w rzeczywistości okręgi wyborcze są większe, ale możemy przyjąć, że nasz 1 wirtualny wyborca odpowiada dużej liczbie rzeczywistych wyborców)
+
+	-W kolejnych wierszach:
+		-są opisy poszczególnych kandydatów, każdy kandydat jest w osobnym wierszu, kandydaci są pogrupowani okręgami (zgodnie z ich rosnącymi numerami), w ramach okręgu partiami (kolejność partii taka sama jak podana wcześniej), a w ramach partii występują w pliku zgodnie z rosnącą pozycją na liście.
+
+		Każdy wiersz ma postać: imię nazwisko numer_okręgu nazwa_partii pozycja_na_liscie w1 w2 … wc, gdzie w1 w2 … wc to wartości cech (liczby całkowite z przedziału [-100, 100]). nazwa_partii musi być jedną z nazw podanych wcześniej, numer okręgu musi być liczbą całkowitą ze zbioru {1,2,...,n}, pozycja_na_liscie jest liczbą całkowitą ze zbioru {1,2,...,liczba_wyborców_w_okręgu / 10}.
+
+	-Kolejne wiersze:
+	 	-zawierają opis wyborców, jeden wiersz zawiera opis jednego wyborcy, najpierw wypisani są wszyscy wyborcy z okręgu 1, potem wszyscy wyborcy z okręgu 2, itd. Każdy wiersz zawiera imię, nazwisko, numer okręgu wyborczego oraz typ wyborcy, który jest reprezentowany jako liczba:
+			-1 - Żelazny elektorat partyjny
+			-2 - Żelazny elektorat kandydata
+			-3 - Minimalizujący jednocechowy wybierający spośród wszystkich partii
+			-4 - Maksymalizujący jednocechowy wybierający spośród wszystkich partii
+			-5 - Wszechstronny wybierający spośród wszystkich partii
+			-6 - Minimalizujący jednocechowy wybierający spośród jednej partii
+			-7 - Maksymalizujący jednocechowy wybierający spośród jednej partii
+			-8 - Wszechstronny wybierający spośród jednej partii
+
+		Dodatkowo, w przypadku wyborców typu 1 i 2 w tym samym wierszu mamy jeszcze (po spacji) nazwę partii, a w przypadku wyborców typu 2 dodatkowo jeszcze pozycję kandydata na liście partii (ponieważ kandydaci mogą mieć takie samo imię i nazwisko, więc to partia i pozycja na liście w okręgu jednoznacznie identyfikuje kandydata). W przypadku wyborców typu 5 i 8 mamy za to wartości bazowe wag, które dany wyborca przypisuje poszczególnym cechom kandydatów: w1, w2, …, wc (dla każdego wyborcy kolejność wartości wag jest taka sama). Wszystkie te wartości są oddzielone pojedynczą spacją i powinny być ze zbioru: {-100,-99,…,0,...,99,100}.
+
+		W przypadku wyborców typu 8 na końcu (po wagach) powinna być jeszcze nazwa partii. W przypadku wyborców typu 3,4,6,7 po typie jest natomiast (po spacji) jedna liczba ze zbioru {1,2,...,c}, określająca która wartość cechy kandydatów powinna być maksymalizowana/minimalizowana, a w przypadku wyborców typu 6 i 7 potem jest jeszcze (po spacji) nazwa partii.
+
+	-W kolejnych d wierszach:
+		-jest opis możliwych działań, każdy wiersz zawiera c liczb całkowitych (oddzielonych spacją) ze zbioru {-10,-9,....,0,...,9,10} określających jak zmieniają się wartości każdej spośród c wag poszczególnych cech kandydatów w okręgu wyborczym, w którym zastosowano dane działanie (kolejność wartości wag odpowiada kolejności cech w przypadku kandydatów).
+
+###################
+WYPISYWANIE WYJŚCIA
+###################
+
+Dla każdej z 3 metod przeliczania głosów na mandaty program powinien wypisać w kolejnych wierszach:
+	-nazwę metody przeliczania głosów
+
+	-dla każdego okręgu wyborczego:
+		-nr okręgu wyborczego
+		-imię i nazwisko wyborcy, imię i nazwisko kandydata, na którego głosował (po 1 wierszu na wyborcę)
+		-imię i nazwisko kandydata, jego partię i numer na liście oraz łączną liczbę głosów na niego (po 1 wierszu na kandydata)
+		-ciąg par (nazwa partii, liczba mandatów z danego okręgu)
+
+	-łącznie (dla wszystkich okręgów): ciąg par (nazwa partii, liczba mandatów ze wszystkich okręgów)
