@@ -25,6 +25,10 @@ public class Wektor {
         return współrzędne.length;
     }
 
+    public void ustawWspółrzędną(int index, int wartość) {
+        współrzędne[index] = wartość;
+    }
+
     public static int iloczynSkalarny(Wektor a, Wektor b) {
         assert a.liczbaWspółrzędnych() == b.liczbaWspółrzędnych();
 

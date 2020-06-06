@@ -13,7 +13,6 @@ public class Main {
         try {
 
             Wybory wybory = new Wybory(plik);
-            wybory.
             wybory.symulujWybory();
             //wypisz rezultat
 
@@ -22,7 +21,5 @@ public class Main {
         } catch (FileReadingException e) {
             System.err.println("Problem z czytaniem pliku: " + e.getCause());
         }
-
-
     }
 }

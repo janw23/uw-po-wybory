@@ -31,6 +31,11 @@ public class WektorOgraniczony extends Wektor {
     }
 
     @Override
+    public void ustawWspółrzędną(int index, int wartość) {
+        super.ustawWspółrzędną(index, ogranicz(wartość));
+    }
+
+    @Override
     public void dodaj(Wektor b) {
         super.dodaj(b);
         ograniczWspółrzędne();

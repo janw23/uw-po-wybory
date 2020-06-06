@@ -1,9 +1,17 @@
 package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
+import wybory.pomoce.wektor.WektorOgraniczony;
 
 public class Wszechstronny extends Wyborca {
-    public Wszechstronny(String imię, String nazwisko, OkręgWyborczy okręgWyborczy, int typ) {
-        super(imię, nazwisko, okręgWyborczy, typ);
+
+    private final WektorOgraniczony wagiCech;
+
+    public Wszechstronny(String imię, String nazwisko,
+                         OkręgWyborczy okręgWyborczy,
+                         WektorOgraniczony wagiCech) {
+
+        super(imię, nazwisko, okręgWyborczy);
+        this.wagiCech = wagiCech;
     }
 }

@@ -1,9 +1,16 @@
 package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
+import wybory.partia.Partia;
 
-public class MinimalizującyJednocechowopartyjny extends Wyborca implements Jednocechowy, Jednopartyjny {
-    public MinimalizującyJednocechowopartyjny(String imię, String nazwisko, OkręgWyborczy okręgWyborczy, int typ) {
-        super(imię, nazwisko, okręgWyborczy, typ);
+public class MinimalizującyJednocechowopartyjny
+        extends WyborcaJednocechowopartyjny {
+
+    public MinimalizującyJednocechowopartyjny
+            (String imię, String nazwisko, OkręgWyborczy okręgWyborczy,
+             Partia uwielbionaPartia, int uwielbionaCecha) {
+
+        super(imię, nazwisko, okręgWyborczy,
+                uwielbionaPartia, uwielbionaCecha);
     }
 }
