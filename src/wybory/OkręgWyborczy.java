@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class OkręgWyborczy {
     private final int numer;
-    private OkręgWyborczy scalonyZ = null;
+    private final OkręgWyborczy scalonyZ = null;
 
     private final int liczbaWyborców;
     private final Collection<Wyborca> wyborcy;
@@ -73,5 +73,7 @@ public class OkręgWyborczy {
     public static void scal(OkręgWyborczy okręgA, OkręgWyborczy okręgB) {
         //@todo Implementacja uwzględniająca modyfikację wyborców
     }
+
+    //@todo Wypisywanie na końcu może być po scalonych albo podstawowych
 
 }

@@ -1,6 +1,6 @@
 package wybory.osoba;
 
-import static wybory.pomoce.Pomoce.assessNotNull;
+import java.util.Objects;
 
 public abstract class Osoba {
 
@@ -8,8 +8,8 @@ public abstract class Osoba {
     private String nazwisko;
 
     public Osoba(String imię, String nazwisko) {
-        assessNotNull(imię);
-        assessNotNull(nazwisko);
+        Objects.requireNonNull(imię);
+        Objects.requireNonNull(nazwisko);
         this.imię = imię;
         this.nazwisko = nazwisko;
     }

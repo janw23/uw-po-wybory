@@ -1,5 +1,8 @@
 package wybory.kampania;
 
+import wybory.OkręgWyborczy;
+import wybory.pomoce.para.Para;
+
 public abstract class StrategiaKampanii {
 
     public static final int STRATEGIA_Z_ROZMACHEM = 1;
@@ -7,22 +10,9 @@ public abstract class StrategiaKampanii {
     public static final int STRATEGIA_ZACHŁANNA = 3;
     public static final int STRATEGIA_WŁASNA = 4; //@todo Zmienić nazwę?
 
-    //@todo usunąć
-    /*public static StrategiaKampanii utwórzStrategięKampanii(int kod)
-            throws UnknownCampaignStrategyException {
-
-        switch (kod) {
-            case STRATEGIA_Z_ROZMACHEM:
-                return new StrategiaZRozmachem();
-            case STRATEGIA_SKROMNA:
-                return new StrategiaSkromna();
-            case STRATEGIA_ZACHŁANNA:
-                return new StrategiaZachłanna();
-            case STRATEGIA_WŁASNA:
-                return new StrategiaWłasna();
-            default:
-                throw new UnknownCampaignStrategyException(kod);
-        }
-    }*/
+    //wykonuje najlepsze działanie kampanijne według danej strategii
+    public abstract Para<DziałanieKampanijne, OkręgWyborczy>
+    wybierzNajlepszeDziałanieKampanijne(DaneKampanii daneKampanii,
+                                        int pozostałyBudżet);
 
 }

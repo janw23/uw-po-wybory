@@ -1,7 +1,10 @@
 package wybory;
 
+import wybory.głosowanie.MetodaGłosowania;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class Main {
 
@@ -11,9 +14,8 @@ public class Main {
         File plik = new File("/home/janw23/MIMUW/PO/Projects/uw-po-wybory/test1.in");//args[0]);
 
         try {
-
             Wybory wybory = new Wybory(plik);
-            wybory.symulujWybory();
+            wybory.symulujWybory(Arrays.asList(new MetodaGłosowania[]{null}));
             //wypisz rezultat
 
         } catch (FileNotFoundException e) {

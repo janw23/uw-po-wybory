@@ -1,6 +1,12 @@
 package wybory.pomoce.wektor;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class Wektor {
     final int[] współrzędne;
@@ -27,6 +33,10 @@ public class Wektor {
 
     public void ustawWspółrzędną(int index, int wartość) {
         współrzędne[index] = wartość;
+    }
+
+    public int dajWspółrzędną(int index) {
+        return współrzędne[index];
     }
 
     public static int iloczynSkalarny(Wektor a, Wektor b) {
@@ -60,5 +70,4 @@ public class Wektor {
     public String toString() {
         return Arrays.toString(współrzędne);
     }
-
 }

@@ -1,5 +1,6 @@
 package wybory;
 
+import wybory.głosowanie.MetodaGłosowania;
 import wybory.kampania.*;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.osoba.wyborca.*;
@@ -9,9 +10,7 @@ import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
+import java.util.*;
 
 import static wybory.osoba.wyborca.Wyborca.*;
 
@@ -84,23 +83,83 @@ public class Wybory {
     private Partia[] partie;
     private DziałanieKampanijne[] działaniaKampanijne;
     private int liczbaCechKandydatów;
-    private Collection<Para<Integer, Integer>> scalenia;
+    private List<Para<Integer, Integer>> scalenia;
 
     public Wybory(File plik)
             throws FileReadingException, FileNotFoundException {
+
         super();
         WczytywaczDanych.wczytajWyboryZPliku(this, plik);
+        scalOkręgi();
     }
 
-    /*private void scalOkręgi() {
+    //konstruktor tworzący kopię
+    public Wybory(Wybory wybory) {
+        okręgiWyborcze = new OkręgWyborczy[wybory.okręgiWyborcze.length];
+        partie = new Partia[wybory.partie.length];
+        działaniaKampanijne = new DziałanieKampanijne[wybory.działaniaKampanijne.length];
+        liczbaCechKandydatów = wybory.liczbaCechKandydatów;
+
+        System.arraycopy(okręgiWyborcze, 0, wybory.okręgiWyborcze, 0, okręgiWyborcze.length);
+        System.arraycopy(partie, 0, wybory.partie, 0, partie.length);
+        System.arraycopy(działaniaKampanijne, 0, wybory.działaniaKampanijne, 0, działaniaKampanijne.length);
+        scalenia = List.copyOf(wybory.scalenia);
+
+        assert wybory.equals(this);
+    }
+
+    private void scalOkręgi() {
         for (Para<Integer, Integer> scalenie : scalenia) {
             assert scalenie.drugi() == scalenie.pierwszy() + 1;
-            OkręgWyborczy.scal(okręgiWyborcze[]);
+            OkręgWyborczy okręgA = okręgiWyborcze[scalenie.pierwszy()];
+            OkręgWyborczy okręgB = okręgiWyborcze[scalenie.drugi()];
+            OkręgWyborczy.scal(okręgA, okręgB);
         }
-    }*/
+    }
 
-    public void symulujWybory() {
-        //@todo zrobienie kopii wyborów, żeby zachować dane?
+    public void symulujWybory(List<MetodaGłosowania> metodyGłosowania) {
+        //@todo Użyć Stringbuildera i zwrócić String?
+        for (MetodaGłosowania metodaGłosowania : metodyGłosowania) {
+            Wybory wybory = new Wybory(this);
+            SymulacjaWyborów.przeprowadźWybory(wybory, metodaGłosowania);
+            //@todo wybory.wypiszWynik() czy jakoś tak
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wybory wybory = (Wybory) o;
+        return liczbaCechKandydatów == wybory.liczbaCechKandydatów &&
+                Arrays.equals(okręgiWyborcze, wybory.okręgiWyborcze) &&
+                Arrays.equals(partie, wybory.partie) &&
+                Arrays.equals(działaniaKampanijne, wybory.działaniaKampanijne) &&
+                Objects.equals(scalenia, wybory.scalenia);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(liczbaCechKandydatów, scalenia);
+        result = 31 * result + Arrays.hashCode(okręgiWyborcze);
+        result = 31 * result + Arrays.hashCode(partie);
+        result = 31 * result + Arrays.hashCode(działaniaKampanijne);
+        return result;
+    }
+
+    static class SymulacjaWyborów {
+
+        static void przeprowadźWybory
+                (Wybory wybory, MetodaGłosowania metodaGłosowania) {
+
+            przeprowadźKampanię(wybory);
+        }
+
+        private static void przeprowadźKampanię(Wybory wybory) {
+
+        }
+
+
     }
 
     //służy do wczytywania danych wyborów z pliku

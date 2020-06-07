@@ -3,7 +3,7 @@ package wybory.osoba.wyborca;
 import wybory.OkręgWyborczy;
 import wybory.partia.Partia;
 
-import static wybory.pomoce.Pomoce.assessNotNull;
+import java.util.Objects;
 
 public abstract class WyborcaJednocechowopartyjny
         extends Wyborca implements Jednocechowy, Jednopartyjny {
@@ -17,7 +17,7 @@ public abstract class WyborcaJednocechowopartyjny
                                        int uwielbionaCecha) {
 
         super(imię, nazwisko, okręgWyborczy);
-        assessNotNull(uwielbionaPartia);
+        Objects.requireNonNull(uwielbionaPartia);
         this.uwielbionaPartia = uwielbionaPartia;
         this.uwielbionaCecha = uwielbionaCecha;
     }

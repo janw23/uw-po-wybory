@@ -3,7 +3,7 @@ package wybory.osoba.wyborca;
 import wybory.OkręgWyborczy;
 import wybory.osoba.Osoba;
 
-import static wybory.pomoce.Pomoce.assessNotNull;
+import java.util.Objects;
 
 public abstract class Wyborca extends Osoba {
 
@@ -56,7 +56,7 @@ public abstract class Wyborca extends Osoba {
                    OkręgWyborczy okręgWyborczy) {
 
         super(imię, nazwisko);
-        assessNotNull(okręgWyborczy);
+        Objects.requireNonNull(okręgWyborczy);
         this.okręgWyborczy = okręgWyborczy;
     }
 }
