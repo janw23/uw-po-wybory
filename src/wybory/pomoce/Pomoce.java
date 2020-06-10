@@ -36,6 +36,9 @@ public class Pomoce {
             }
         }
 
+        if (najlepsze.isEmpty())
+            return null;
+
         //wybieranie losowego elementu z najlepszych do zwrócenia
         Random rand = new Random();
         int index = rand.nextInt(najlepsze.size());
@@ -43,6 +46,11 @@ public class Pomoce {
         while (index-- > 0)
             najlepsze.pop();
 
-        return najlepsze.isEmpty() ? null : najlepsze.peek();
+        return najlepsze.peek();
+    }
+
+    public static <T> T wybierzLosowy(List<T> elementy) {
+        Random rand = new Random();
+        return elementy.get(rand.nextInt(elementy.size()));
     }
 }

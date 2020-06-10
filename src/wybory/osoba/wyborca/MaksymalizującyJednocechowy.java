@@ -1,9 +1,13 @@
 package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
+import wybory.osoba.kandydat.Kandydat;
+import wybory.pomoce.Pomoce;
+import wybory.pomoce.Wartościowanie;
+
+import java.util.List;
 
 public class MaksymalizującyJednocechowy extends WyborcaJednocechowy {
-
 
     public MaksymalizującyJednocechowy(String imię, String nazwisko,
                                        OkręgWyborczy okręgWyborczy,
@@ -11,4 +15,21 @@ public class MaksymalizującyJednocechowy extends WyborcaJednocechowy {
 
         super(imię, nazwisko, okręgWyborczy, uwielbionaCecha);
     }
+
+    @Override
+    public Kandydat wybranyKandydat() {
+        List<Kandydat> kandydaci =
+                okręgWyborczy(true).kandydaci(true);
+
+        Wartościowanie<Kandydat> najwyższaCecha = new Wartościowanie<Kandydat>() {
+            @Override
+            public int wartość(Kandydat o) {
+                return o.cechy().dajWspółrzędną(uwielbionaCecha());
+            }
+        };
+
+        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
+    }
+
+
 }

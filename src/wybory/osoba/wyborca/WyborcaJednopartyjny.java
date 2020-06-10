@@ -1,13 +1,13 @@
 package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
+import wybory.osoba.kandydat.Kandydat;
 import wybory.partia.Partia;
 
+import java.util.List;
 import java.util.Objects;
 
-//@todo Pozbyć się tego i zmienić wszechstronny na klasę z której się dzieciczy a to na interfejs
-public abstract class WyborcaJednopartyjny
-        extends Wyborca implements Jednopartyjny {
+public abstract class WyborcaJednopartyjny extends Wyborca implements Jednopartyjny {
 
     private final Partia uwielbionaPartia;
 
@@ -23,5 +23,11 @@ public abstract class WyborcaJednopartyjny
     @Override
     public Partia uwielbionaPartia() {
         return uwielbionaPartia;
+    }
+
+    @Override
+    List<Kandydat> rozważaniKandydaci() {
+        return okręgWyborczy(true)
+                .kandydaciNależącyDoPartii(uwielbionaPartia(), true);
     }
 }

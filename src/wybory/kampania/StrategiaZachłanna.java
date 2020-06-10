@@ -6,26 +6,30 @@ import wybory.osoba.wyborca.Jednopartyjny;
 import wybory.osoba.wyborca.Wszechstronny;
 import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
+import wybory.pomoce.Pomoce;
+import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
+import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StrategiaZachłanna extends StrategiaKampanii {
 
-    private boolean ważącyCechyIMożeGłosowaćNaPartię(Wyborca wyborca, Partia partia) {
+    private boolean wszechstronnyIMożeGłosowaćNaPartię(Wyborca wyborca, Partia partia) {
         if (wyborca instanceof Jednopartyjny) {
             if (!((Jednopartyjny) wyborca).uwielbionaPartia().equals(partia))
                 return false;
         }
-        return wyborca instanceof WażącyCechy;
+        return wyborca instanceof Wszechstronny;
     }
 
-    private List<Wszechstronny> wyborcyWażącyCechyMogącyGłosowaćNaPartię(OkręgWyborczy okręg, Partia partia) {
+    private List<Wszechstronny> wyborcyWszechstronniMogącyGłosowaćNaPartię(OkręgWyborczy okręg,
+                                                                           Partia partia) {
         List<Wszechstronny> wyborcy = new ArrayList<>();
 
-        for (Wyborca wyborca : okręg.wyborcy())
-            if (ważącyCechyIMożeGłosowaćNaPartię(wyborca, partia))
+        for (Wyborca wyborca : okręg.wyborcy(true))
+            if (wszechstronnyIMożeGłosowaćNaPartię(wyborca, partia))
                 wyborcy.add((Wszechstronny) wyborca);
 
         return wyborcy;
@@ -33,33 +37,54 @@ public class StrategiaZachłanna extends StrategiaKampanii {
 
     //liczy sumę sum ważonych wyborców i kandydatów po wykonaniu działania
     private int sumaSumWażonych(DziałanieKampanijne działanie,
-                                           List<Kandydat> kandydaci, List<Wszechstronny> wyborcy) {
-
+                                List<Kandydat> kandydaci, List<Wszechstronny> wyborcy) {
         int suma = 0;
-        for (Wszechstronny wyborca : wyborcy)
-            //@todo Tu Skończyłem
 
+        //liczy sumę ważoną, na końcu przywracając początkowe wagi wyborcy
+        for (Wszechstronny wyborca : wyborcy) {
+            WektorOgraniczony stareWagi = new WektorOgraniczony(wyborca.wagiCech());
+            działanie.wykonajNa(wyborca);
+
+            for (Kandydat kandydat : kandydaci)
+                suma += wyborca.sumaWażonaCech(kandydat);
+
+            wyborca.wagiCech(stareWagi);
+        }
+
+        return suma;
     }
 
     @Override
     public Para<DziałanieKampanijne, OkręgWyborczy> wybierzNajlepszeDziałanieKampanijne
             (DaneKampanii daneKampanii, Partia partia, int pozostałyBudżet) {
 
+        //trójka (suma sum ważonych, działanie, okręg)
+        List<Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>>> możliwości = new ArrayList<>();
+
+        //tworzy trójki możliwych działań (suma sum ważonych, działanie, okręg)
         for (OkręgWyborczy okręg : daneKampanii.okręgiWyborcze()) {
             List<Kandydat> kandydaciPartii = partia.kandydaciWOkręgu(okręg);
-            List<Wszechstronny> wyborcy = wyborcyWażącyCechyMogącyGłosowaćNaPartię(okręg, partia);
+            List<Wszechstronny> wyborcy = wyborcyWszechstronniMogącyGłosowaćNaPartię(okręg, partia);
 
             for (DziałanieKampanijne działanie : daneKampanii.działaniaKampanijne()) {
-                if (działanie.obliczKosztWykonania(okręg) > pozostałyBudżet)
-                    continue;
-
-
-
-
+                if (działanie.obliczKosztWykonania(okręg) <= pozostałyBudżet) {
+                    int sumaSumWażonych = sumaSumWażonych(działanie, kandydaciPartii, wyborcy);
+                    możliwości.add(new Para<>(sumaSumWażonych, new Para<>(działanie, okręg)));
+                }
             }
-
         }
 
-        return null;
+        //wybieranie możliwości o największej sumie sum ważonych
+        Wartościowanie<Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>>> wartościowanie =
+                new Wartościowanie<>() {
+                    @Override
+                    public int wartość(Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>> o) {
+                        return o.pierwszy();
+                    }
+                };
+
+        var najlepszy = Pomoce.wybierzNajlepszyLosowy(możliwości, wartościowanie);
+
+        return najlepszy == null ? null : najlepszy.drugi();
     }
 }

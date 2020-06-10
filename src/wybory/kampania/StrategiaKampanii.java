@@ -32,7 +32,6 @@ public abstract class StrategiaKampanii {
 
     //zwraca wszystkie pary <działanie, okręg>, których wykonanie mieści się w budżecie
     List<Para<DziałanieKampanijne, OkręgWyborczy>> możliweDziałania(DaneKampanii dane, int budżet) {
-
         Predicate<Para<DziałanieKampanijne, OkręgWyborczy>> zaDrogi =
                 możliwość -> kosztWykonania(możliwość) > budżet;
 

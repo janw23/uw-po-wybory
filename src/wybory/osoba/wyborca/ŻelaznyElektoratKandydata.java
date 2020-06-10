@@ -3,8 +3,12 @@ package wybory.osoba.wyborca;
 import wybory.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 
-public class ŻelaznyElektoratKandydata
-        extends Wyborca implements Jednokandydatowy {
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
+public class ŻelaznyElektoratKandydata extends Wyborca implements Jednokandydatowy {
 
     private final Kandydat uwielbionykandydat;
 
@@ -14,5 +18,20 @@ public class ŻelaznyElektoratKandydata
 
         super(imię, nazwisko, okręgWyborczy);
         this.uwielbionykandydat = uwielbionyKandydat;
+    }
+
+    @Override
+    public Kandydat uwielbionyKandydat() {
+        return uwielbionykandydat;
+    }
+
+    @Override
+    public Kandydat wybranyKandydat() {
+        return uwielbionyKandydat();
+    }
+
+    @Override
+    List<Kandydat> rozważaniKandydaci() {
+        return Collections.singletonList(uwielbionyKandydat());
     }
 }

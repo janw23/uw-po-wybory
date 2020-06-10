@@ -6,16 +6,13 @@ import wybory.pomoce.Pomoce;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
 
-import java.util.List;
-
 public class StrategiaZRozmachem extends StrategiaKampanii {
 
     @Override
     public Para<DziałanieKampanijne, OkręgWyborczy> wybierzNajlepszeDziałanieKampanijne
             (DaneKampanii daneKampanii, Partia partia, int pozostałyBudżet) {
 
-        List<Para<DziałanieKampanijne, OkręgWyborczy>> możliwości =
-                możliweDziałania(daneKampanii, pozostałyBudżet);
+        var możliwości = możliweDziałania(daneKampanii, pozostałyBudżet);
 
         Wartościowanie<Para<DziałanieKampanijne, OkręgWyborczy>> wartościowanie = new Wartościowanie<>() {
             @Override

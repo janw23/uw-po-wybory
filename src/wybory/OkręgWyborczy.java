@@ -5,11 +5,15 @@ import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 public class OkręgWyborczy {
+
     private final int numer;
-    private final OkręgWyborczy scalonyZ = null;
+    private OkręgWyborczy scalonyZ = null;
 
     private final int liczbaWyborców;
     private final List<Wyborca> wyborcy;
@@ -69,18 +73,50 @@ public class OkręgWyborczy {
         return null;
     }
 
-    public List<Wyborca> wyborcy() {
-        return this.wyborcy;
+    public List<Wyborca> wyborcy(boolean uwzględnijScalanie) {
+        if (!uwzględnijScalanie || !scalony())
+            return this.wyborcy;
+
+        List<Wyborca> wszyscyWyborcy = new ArrayList<>(wyborcy);
+        wszyscyWyborcy.addAll(scalonyZ.wyborcy);
+
+        return wszyscyWyborcy;
     }
 
-    public List<Kandydat> kandydaci() {
-        return this.kandydaci;
+    public List<Kandydat> kandydaci(boolean uwzględnijScalanie) {
+        if (!uwzględnijScalanie || !scalony())
+            return this.kandydaci;
+
+        List<Kandydat> wszyscyKandydaci = new ArrayList<>(kandydaci);
+        wszyscyKandydaci.addAll(scalonyZ.kandydaci);
+
+        return wszyscyKandydaci;
+    }
+
+    public List<Kandydat> kandydaciNależącyDoPartii(Partia partia,
+                                                    boolean uwzględnijScalanie) {
+        List<Kandydat> kandydaci = new LinkedList<>(kandydaci(uwzględnijScalanie));
+
+        Predicate<Kandydat> zInnejPartii = (o) -> !o.należyDoPartii(partia);
+        kandydaci.removeIf(zInnejPartii);
+
+        return kandydaci;
+    }
+
+    public boolean jestGłówny() {
+        return numerOkręgu(false) == numerOkręgu(true);
+    }
+
+    public OkręgWyborczy dajGłówny() {
+        if (jestGłówny())
+            return this;
+
+        assert scalonyZ != null;
+        return scalonyZ;
     }
 
     public static void scal(OkręgWyborczy okręgA, OkręgWyborczy okręgB) {
-        //@todo Implementacja uwzględniająca modyfikację wyborców
+        okręgA.scalonyZ = okręgB;
+        okręgB.scalonyZ = okręgA;
     }
-
-    //@todo Wypisywanie na końcu może być po scalonych albo podstawowych
-
 }

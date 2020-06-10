@@ -6,6 +6,8 @@ import wybory.partia.Partia;
 import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
+import java.util.Objects;
+
 public class Kandydat extends Osoba {
     private final Partia partia;
     private final OkręgWyborczy okręgWyborczy;
@@ -37,5 +39,28 @@ public class Kandydat extends Osoba {
 
     public Wektor cechy() {
         return cechy;
+    }
+
+    public OkręgWyborczy okręgWyborczy(boolean uwzględnijScalanie) {
+        if (!uwzględnijScalanie)
+            return okręgWyborczy;
+
+        return okręgWyborczy.dajGłówny();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kandydat kandydat = (Kandydat) o;
+        return pozycjaNaLiście == kandydat.pozycjaNaLiście &&
+                Objects.equals(partia, kandydat.partia) &&
+                Objects.equals(okręgWyborczy, kandydat.okręgWyborczy) &&
+                Objects.equals(cechy, kandydat.cechy);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partia, okręgWyborczy, pozycjaNaLiście, cechy);
     }
 }

@@ -2,7 +2,9 @@ package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
 import wybory.osoba.Osoba;
+import wybory.osoba.kandydat.Kandydat;
 
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Wyborca extends Osoba {
@@ -52,11 +54,20 @@ public abstract class Wyborca extends Osoba {
 
     private final OkręgWyborczy okręgWyborczy;
 
-    public Wyborca(String imię, String nazwisko,
-                   OkręgWyborczy okręgWyborczy) {
-
+    public Wyborca(String imię, String nazwisko, OkręgWyborczy okręgWyborczy) {
         super(imię, nazwisko);
         Objects.requireNonNull(okręgWyborczy);
         this.okręgWyborczy = okręgWyborczy;
+    }
+
+    public abstract Kandydat wybranyKandydat();
+
+    abstract List<Kandydat> rozważaniKandydaci();
+
+    public OkręgWyborczy okręgWyborczy(boolean uwzględnijScalanie) {
+        if (!uwzględnijScalanie)
+            return okręgWyborczy;
+
+        return okręgWyborczy.dajGłówny();
     }
 }
