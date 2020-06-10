@@ -1,6 +1,7 @@
 package wybory.kampania;
 
 import wybory.OkręgWyborczy;
+import wybory.osoba.wyborca.Wyborca;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 public class DziałanieKampanijne {
@@ -26,4 +27,9 @@ public class DziałanieKampanijne {
         return kosztBazowy * okręgWyborczy.liczbaWyborców(true);
     }
 
+    public void wykonajNa(OkręgWyborczy okręg) {
+        for (Wyborca wyborca : okręg.wyborcy())
+            if (wyborca instanceof WażącyCechy)
+                ((WażącyCechy) wyborca).zmieńWagiCechOWektor(zmianyWag);
+    }
 }

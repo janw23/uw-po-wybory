@@ -3,6 +3,7 @@ package wybory.osoba.kandydat;
 import wybory.OkręgWyborczy;
 import wybory.osoba.Osoba;
 import wybory.partia.Partia;
+import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 public class Kandydat extends Osoba {
@@ -32,5 +33,9 @@ public class Kandydat extends Osoba {
 
     public boolean należyDoPartii(Partia partia) {
         return partia.equals(this.partia);
+    }
+
+    public Wektor cechy() {
+        return cechy;
     }
 }

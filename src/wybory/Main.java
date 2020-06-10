@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
+//@todo Rozważyć zamianę w plikach LinkedList oraz ArrayList
+
 public class Main {
 
     public static void main(String[] args) {

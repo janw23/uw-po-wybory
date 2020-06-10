@@ -5,6 +5,7 @@ import wybory.partia.Partia;
 
 import java.util.Objects;
 
+//@todo Pozbyć się tego i zmienić wszechstronny na klasę z której się dzieciczy a to na interfejs
 public abstract class WyborcaJednopartyjny
         extends Wyborca implements Jednopartyjny {
 
@@ -19,4 +20,8 @@ public abstract class WyborcaJednopartyjny
         this.uwielbionaPartia = uwielbionaPartia;
     }
 
+    @Override
+    public Partia uwielbionaPartia() {
+        return uwielbionaPartia;
+    }
 }

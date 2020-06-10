@@ -15,6 +15,11 @@ public class WektorOgraniczony extends Wektor {
         ograniczWspółrzędne();
     }
 
+    public WektorOgraniczony(WektorOgraniczony w) {
+        super(w);
+        this.ograniczenie = w.ograniczenie;
+    }
+
     public WektorOgraniczony(int[] współrzędne, int ograniczenie) {
         super(współrzędne);
         this.ograniczenie = ograniczenie;

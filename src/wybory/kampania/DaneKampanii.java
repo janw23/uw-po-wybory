@@ -18,4 +18,16 @@ public class DaneKampanii {
         this.okręgiWyborcze = null;
         this.metodaGłosowania = metodaGłosowania;
     }
+
+    public MetodaGłosowania metodaGłosowania() {
+        return metodaGłosowania;
+    }
+
+    public List<OkręgWyborczy> okręgiWyborcze() {
+        return okręgiWyborcze;
+    }
+
+    public List<DziałanieKampanijne> działaniaKampanijne() {
+        return działaniaKampanijne;
+    }
 }

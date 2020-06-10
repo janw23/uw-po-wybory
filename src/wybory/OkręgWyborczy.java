@@ -5,15 +5,15 @@ import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class OkręgWyborczy {
     private final int numer;
     private final OkręgWyborczy scalonyZ = null;
 
     private final int liczbaWyborców;
-    private final Collection<Wyborca> wyborcy;
-    private final Collection<Kandydat> kandydaci;
+    private final List<Wyborca> wyborcy;
+    private final List<Kandydat> kandydaci;
 
     public OkręgWyborczy(int numer, int liczbaWyborców) {
         assert liczbaWyborców % 10 == 0; //liczba wyborców jest postaci 10k
@@ -66,8 +66,15 @@ public class OkręgWyborczy {
                 return kandydat;
             }
         }
-
         return null;
+    }
+
+    public List<Wyborca> wyborcy() {
+        return this.wyborcy;
+    }
+
+    public List<Kandydat> kandydaci() {
+        return this.kandydaci;
     }
 
     public static void scal(OkręgWyborczy okręgA, OkręgWyborczy okręgB) {

@@ -21,4 +21,8 @@ public abstract class WyborcaJednocechowopartyjny
         this.uwielbionaPartia = uwielbionaPartia;
         this.uwielbionaCecha = uwielbionaCecha;
     }
+
+    public Partia uwielbionaPartia() {
+        return this.uwielbionaPartia;
+    }
 }
