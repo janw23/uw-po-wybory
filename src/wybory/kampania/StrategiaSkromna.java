@@ -6,6 +6,8 @@ import wybory.pomoce.Pomoce;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class StrategiaSkromna extends StrategiaKampanii {
 
     @Override
@@ -21,6 +23,6 @@ public class StrategiaSkromna extends StrategiaKampanii {
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(możliwości, wartościowanie);
+        return wybierzNajlepszyLosowy(możliwości, wartościowanie);
     }
 }

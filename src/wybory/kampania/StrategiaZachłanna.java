@@ -14,6 +14,8 @@ import wybory.pomoce.wektor.WektorOgraniczony;
 import java.util.ArrayList;
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class StrategiaZachłanna extends StrategiaKampanii {
 
     private boolean wszechstronnyIMożeGłosowaćNaPartię(Wyborca wyborca, Partia partia) {
@@ -83,7 +85,7 @@ public class StrategiaZachłanna extends StrategiaKampanii {
                     }
                 };
 
-        var najlepszy = Pomoce.wybierzNajlepszyLosowy(możliwości, wartościowanie);
+        var najlepszy = wybierzNajlepszyLosowy(możliwości, wartościowanie);
 
         return najlepszy == null ? null : najlepszy.drugi();
     }

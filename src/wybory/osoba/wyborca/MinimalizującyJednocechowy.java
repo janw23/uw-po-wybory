@@ -7,6 +7,8 @@ import wybory.pomoce.Wartościowanie;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class MinimalizującyJednocechowy extends WyborcaJednocechowy {
 
     public MinimalizującyJednocechowy(String imię, String nazwisko,
@@ -27,6 +29,6 @@ public class MinimalizującyJednocechowy extends WyborcaJednocechowy {
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najniższaCecha);
+        return wybierzNajlepszyLosowy(kandydaci, najniższaCecha);
     }
 }

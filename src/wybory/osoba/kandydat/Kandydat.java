@@ -37,6 +37,10 @@ public class Kandydat extends Osoba {
         return partia.equals(this.partia);
     }
 
+    public Partia partia() {
+        return this.partia;
+    }
+
     public Wektor cechy() {
         return cechy;
     }

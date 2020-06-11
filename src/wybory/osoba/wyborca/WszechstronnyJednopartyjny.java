@@ -9,6 +9,8 @@ import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopartyjny {
 
     private final Partia uwielbionaPartia;
@@ -39,7 +41,7 @@ public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopa
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najwyższaSumaWażona);
+        return wybierzNajlepszyLosowy(kandydaci, najwyższaSumaWażona);
     }
 
     @Override

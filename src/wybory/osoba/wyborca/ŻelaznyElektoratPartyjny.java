@@ -7,6 +7,8 @@ import wybory.pomoce.Pomoce;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzLosowy;
+
 public class ŻelaznyElektoratPartyjny extends WyborcaJednopartyjny {
 
     public ŻelaznyElektoratPartyjny(String imię, String nazwisko,
@@ -18,6 +20,6 @@ public class ŻelaznyElektoratPartyjny extends WyborcaJednopartyjny {
     @Override
     public Kandydat wybranyKandydat() {
         List<Kandydat> kandydaci = rozważaniKandydaci();
-        return Pomoce.wybierzLosowy(kandydaci);
+        return wybierzLosowy(kandydaci);
     }
 }

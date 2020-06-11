@@ -7,6 +7,8 @@ import wybory.pomoce.Wartościowanie;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class MaksymalizującyJednocechowy extends WyborcaJednocechowy {
 
     public MaksymalizującyJednocechowy(String imię, String nazwisko,
@@ -28,7 +30,7 @@ public class MaksymalizującyJednocechowy extends WyborcaJednocechowy {
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
+        return wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
     }
 
 

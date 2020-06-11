@@ -8,6 +8,8 @@ import wybory.pomoce.Wartościowanie;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class MaksymalizującyJednocechowopartyjny extends WyborcaJednocechowopartyjny {
 
     public MaksymalizującyJednocechowopartyjny
@@ -30,6 +32,6 @@ public class MaksymalizującyJednocechowopartyjny extends WyborcaJednocechowopar
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
+        return wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
     }
 }

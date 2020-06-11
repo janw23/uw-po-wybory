@@ -9,6 +9,7 @@ import wybory.pomoce.para.Para;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //klasa regulująca zasady i przeprowadzanie głosowanie
 public class Głosowanie {
@@ -16,8 +17,8 @@ public class Głosowanie {
     private final MetodaLiczeniaGłosów metodaLiczeniaGłosów;
     private final List<Para<Wyborca, Kandydat>> głosy; //każdy głos na kandydata jest tu wpisywany
 
-    private final HashMap<OkręgWyborczy, HashMap<Kandydat, Integer>> liczbaGłosówNaKandydatówWOkręgach;
-    private final HashMap<Partia, Integer> mandatyUzyskanePrzezPartie;
+    private final Map<OkręgWyborczy, HashMap<Kandydat, Integer>> liczbaGłosówNaKandydatówWOkręgach;
+    private final Map<Partia, Integer> mandatyUzyskanePrzezPartie;
 
     public Głosowanie(MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
         this.metodaLiczeniaGłosów = metodaLiczeniaGłosów;
@@ -47,13 +48,31 @@ public class Głosowanie {
                 equals(głosującyWyborca.okręgWyborczy(true));
     }
 
-    public void resetujGłosy() {
+    public void resetujGłosowanie() {
         głosy.clear();
+        liczbaGłosówNaKandydatówWOkręgach.clear();
+        mandatyUzyskanePrzezPartie.clear();
     }
 
     public void przeliczGłosy() {
         przeliczGłosyNaKandydatów();
+        assert zgodnaLiczbaGłosów();
         przeliczGłosyNaMandaty();
+    }
+
+    //funkcja do upewnienia się, że wszystkie głosy zostały policzone
+    private boolean zgodnaLiczbaGłosów() {
+        for (var głosyWOkręgu : liczbaGłosówNaKandydatówWOkręgach.entrySet()) {
+            int suma = 0;
+
+            for (int liczbaGłosów : głosyWOkręgu.getValue().values())
+                suma += liczbaGłosów;
+
+            if (suma != głosyWOkręgu.getKey().wyborcy(true).size())
+                return false;
+        }
+
+        return true;
     }
 
     private void przeliczGłosyNaKandydatów() {
@@ -65,9 +84,7 @@ public class Głosowanie {
             var liczbaGłosówNaKandydatów =
                     liczbaGłosówNaKandydatówWOkręgach.computeIfAbsent(okręg, k -> new HashMap<>());
 
-            //jeśli w mapie nie ma jeszcze kandydata, to wstawia go z liczbą głosów 0
-            liczbaGłosówNaKandydatów.putIfAbsent(kandydat, 0);
-            liczbaGłosówNaKandydatów.computeIfPresent(kandydat, (k, v) -> v + 1);
+            liczbaGłosówNaKandydatów.merge(kandydat, 1, Integer::sum);
         }
     }
 
@@ -84,16 +101,12 @@ public class Głosowanie {
 
     private void przeliczGłosyNaMandaty() {
         for (var daneOkręgu : liczbaGłosówNaKandydatówWOkręgach.entrySet()) {
-            var okręg = daneOkręgu.getKey();
-            var głosyWOkręgu = daneOkręgu.getValue().entrySet();
-            var mandatyPartii = metodaLiczeniaGłosów.obliczPrzydziałMandatówWOkręgu(okręg, głosyWOkręgu);
 
-            for (var mandaty : mandatyPartii) {
-                Partia partia = mandaty.pierwszy();
-                int liczbaMandatów = mandaty.drugi();
-                mandatyUzyskanePrzezPartie.putIfAbsent(partia, liczbaMandatów);
-                mandatyUzyskanePrzezPartie.computeIfPresent(partia, (k, v) -> v + liczbaMandatów);
-            }
+            var mandatyPartii = metodaLiczeniaGłosów
+                    .obliczPrzydziałMandatówWOkręgu(daneOkręgu.getKey(), daneOkręgu.getValue());
+
+            for (var mandaty : mandatyPartii.entrySet())
+                mandatyUzyskanePrzezPartie.merge(mandaty.getKey(), mandaty.getValue(), Integer::sum);
         }
     }
 

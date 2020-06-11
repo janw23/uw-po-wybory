@@ -9,6 +9,8 @@ import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.List;
 
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
+
 public class Wszechstronny extends Wyborca {
 
     private WektorOgraniczony wagiCech;
@@ -49,7 +51,7 @@ public class Wszechstronny extends Wyborca {
             }
         };
 
-        return Pomoce.wybierzNajlepszyLosowy(kandydaci, najwyższaSumaWażona);
+        return wybierzNajlepszyLosowy(kandydaci, najwyższaSumaWażona);
     }
 
     @Override

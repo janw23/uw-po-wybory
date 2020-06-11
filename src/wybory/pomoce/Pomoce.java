@@ -2,10 +2,7 @@ package wybory.pomoce;
 
 import wybory.pomoce.para.Para;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 public class Pomoce {
 
@@ -52,5 +49,14 @@ public class Pomoce {
     public static <T> T wybierzLosowy(List<T> elementy) {
         Random rand = new Random();
         return elementy.get(rand.nextInt(elementy.size()));
+    }
+
+    public static <K, V> List<Para<K, V>> zamieńEntrySetNaListęPar(Set<Map.Entry<K, V>> wpisy) {
+        List<Para<K, V>> listaPar = new ArrayList<>(wpisy.size()); //@todo LinkedList?
+
+        for (var wpis : wpisy)
+            listaPar.add(new Para<>(wpis.getKey(), wpis.getValue()));
+
+        return listaPar;
     }
 }

@@ -5,11 +5,34 @@ import wybory.osoba.kandydat.Kandydat;
 import wybory.partia.Partia;
 import wybory.pomoce.para.Para;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class MetodaLiczeniaGłosów {
-    public abstract List<Para<Partia, Integer>> obliczPrzydziałMandatówWOkręgu
-            (OkręgWyborczy okręg, Set<Map.Entry<Kandydat, Integer>> liczbaGłosów);
+
+    public abstract Map<Partia, Integer> obliczPrzydziałMandatówWOkręgu
+            (OkręgWyborczy okręg, Map<Kandydat, Integer> liczbaGłosów);
+
+    Map<Partia, Integer> przeliczGłosyUzyskanePrzezPartie(Map<Kandydat, Integer> głosyKandydatów) {
+        Map<Partia, Integer> liczbaGłosówNaPartie = new HashMap<>(); //(partia -> liczba głosów)
+
+        for (var głos : głosyKandydatów.entrySet())
+            liczbaGłosówNaPartie.merge(głos.getKey().partia(), głos.getValue(), Integer::sum);
+
+        assert zgodnaLiczbaGłosów(głosyKandydatów, liczbaGłosówNaPartie);
+        return liczbaGłosówNaPartie;
+    }
+
+    private boolean zgodnaLiczbaGłosów(Map<Kandydat, Integer> głosyKandydatów, Map<Partia, Integer> głosyPartii) {
+        int suma = 0;
+
+        for (var głosy : głosyKandydatów.entrySet())
+            suma += głosy.getValue();
+
+        for (var głosy : głosyPartii.values())
+            suma -= głosy;
+
+        return suma == 0;
+    }
 }
