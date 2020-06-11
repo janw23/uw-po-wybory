@@ -6,9 +6,9 @@ import wybory.osoba.wyborca.Jednopartyjny;
 import wybory.osoba.wyborca.Wszechstronny;
 import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
-import wybory.pomoce.Pomoce;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
+import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.ArrayList;
@@ -38,22 +38,27 @@ public class StrategiaZachłanna extends StrategiaKampanii {
     }
 
     //liczy sumę sum ważonych wyborców i kandydatów po wykonaniu działania
-    private int sumaSumWażonych(DziałanieKampanijne działanie,
-                                List<Kandydat> kandydaci, List<Wszechstronny> wyborcy) {
+    private int zmianaSumySumWażomych(DziałanieKampanijne działanie,
+                                      List<Kandydat> kandydaci, List<Wszechstronny> wyborcy) {
         int suma = 0;
+        int sumaPoZmianie = 0;
 
         //liczy sumę ważoną, na końcu przywracając początkowe wagi wyborcy
         for (Wszechstronny wyborca : wyborcy) {
             WektorOgraniczony stareWagi = new WektorOgraniczony(wyborca.wagiCech());
-            działanie.wykonajNa(wyborca);
 
             for (Kandydat kandydat : kandydaci)
                 suma += wyborca.sumaWażonaCech(kandydat);
 
+            działanie.wykonajNa(wyborca);
+
+            for (Kandydat kandydat : kandydaci)
+                sumaPoZmianie += wyborca.sumaWażonaCech(kandydat);
+
             wyborca.wagiCech(stareWagi);
         }
 
-        return suma;
+        return sumaPoZmianie - suma;
     }
 
     @Override
@@ -70,8 +75,8 @@ public class StrategiaZachłanna extends StrategiaKampanii {
 
             for (DziałanieKampanijne działanie : daneKampanii.działaniaKampanijne()) {
                 if (działanie.obliczKosztWykonania(okręg) <= pozostałyBudżet) {
-                    int sumaSumWażonych = sumaSumWażonych(działanie, kandydaciPartii, wyborcy);
-                    możliwości.add(new Para<>(sumaSumWażonych, new Para<>(działanie, okręg)));
+                    int zmianaSumySumWażomych = zmianaSumySumWażomych(działanie, kandydaciPartii, wyborcy);
+                    możliwości.add(new Para<>(zmianaSumySumWażomych, new Para<>(działanie, okręg)));
                 }
             }
         }

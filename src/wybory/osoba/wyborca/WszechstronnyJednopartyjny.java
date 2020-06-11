@@ -7,7 +7,6 @@ import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.List;
-import java.util.Objects;
 
 import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 
@@ -27,21 +26,6 @@ public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopa
     @Override
     public Partia uwielbionaPartia() {
         return this.uwielbionaPartia;
-    }
-
-    //@todo Czy to jest potrzebne, czy definicja z nadklasy będzie w tym przypadku korzystać z rozważaniKandydaci w tej klasie?
-    @Override
-    public Kandydat wybranyKandydat() {
-        List<Kandydat> kandydaci = rozważaniKandydaci();
-
-        Wartościowanie<Kandydat> najwyższaSumaWażona = new Wartościowanie<Kandydat>() {
-            @Override
-            public int wartość(Kandydat o) {
-                return sumaWażonaCech(o);
-            }
-        };
-
-        return wybierzNajlepszyLosowy(kandydaci, najwyższaSumaWażona);
     }
 
     @Override

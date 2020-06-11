@@ -8,8 +8,8 @@ import wybory.osoba.kandydat.Kandydat;
 import wybory.pomoce.para.Para;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class Partia {
@@ -36,8 +36,7 @@ public class Partia {
 
     public List<Kandydat> kandydaciWOkręgu(OkręgWyborczy okręg) {
         Predicate<Kandydat> nieZTejPartii = kandydat -> !kandydat.należyDoPartii(this);
-        List<Kandydat> kandydaci = new ArrayList<>(okręg.kandydaci(true));
-        //@todo Poprawić wszędzie przypadki takie jak te tylko brakuje kopiowania listy
+        List<Kandydat> kandydaci = new LinkedList<>(okręg.kandydaci(true));
         kandydaci.removeIf(nieZTejPartii);
         return kandydaci;
     }
@@ -45,7 +44,7 @@ public class Partia {
     //skraca zapis funkcji wyboru działania kampanijnego
     private Para<DziałanieKampanijne, OkręgWyborczy> wybierzDziałanie(DaneKampanii daneKampanii,
                                                                       int pozostałyBudżet) {
-        return strategiaKampanii.wybierzNajlepszeDziałanieKampanijne(daneKampanii, pozostałyBudżet);
+        return strategiaKampanii.wybierzNajlepszeDziałanieKampanijne(daneKampanii, this, pozostałyBudżet);
     }
 
     private void wykonajDziałanie(Para<DziałanieKampanijne, OkręgWyborczy> działanie) {

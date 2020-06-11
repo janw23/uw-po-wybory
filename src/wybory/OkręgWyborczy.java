@@ -7,7 +7,6 @@ import wybory.partia.Partia;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class OkręgWyborczy {
@@ -26,20 +25,6 @@ public class OkręgWyborczy {
 
         wyborcy = new ArrayList<>(liczbaWyborców);
         kandydaci = new ArrayList<>();
-    }
-
-    public OkręgWyborczy(OkręgWyborczy okręgWyborczy) {
-        this.numer = okręgWyborczy.numer;
-        this.scalonyZ = okręgWyborczy.scalonyZ;
-        this.liczbaWyborców = okręgWyborczy.liczbaWyborców;
-
-        List<Wyborca> wyborcy = new ArrayList<>(okręgWyborczy.wyborcy.size());
-
-        for (Wyborca wyborca : okręgWyborczy.wyborcy)
-            wyborcy.add((Wyborca) wyborca.clone());
-
-        this.wyborcy = wyborcy;
-        this.kandydaci = List.copyOf(okręgWyborczy.kandydaci);
     }
 
     public boolean scalony() {

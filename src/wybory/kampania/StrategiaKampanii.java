@@ -20,11 +20,6 @@ public abstract class StrategiaKampanii {
     public abstract Para<DziałanieKampanijne, OkręgWyborczy>
     wybierzNajlepszeDziałanieKampanijne(DaneKampanii daneKampanii, Partia partia, int pozostałyBudżet);
 
-    public final Para<DziałanieKampanijne, OkręgWyborczy>
-    wybierzNajlepszeDziałanieKampanijne(DaneKampanii daneKampanii, int pozostałyBudżet) {
-        return wybierzNajlepszeDziałanieKampanijne(daneKampanii, null, pozostałyBudżet);
-    }
-
     //liczy koszt wykonania danej pary <działanie, okręg>
     int kosztWykonania(Para<DziałanieKampanijne, OkręgWyborczy> możliwość) {
         return możliwość.pierwszy().obliczKosztWykonania(możliwość.drugi());

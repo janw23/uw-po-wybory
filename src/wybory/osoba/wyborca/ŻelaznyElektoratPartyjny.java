@@ -3,10 +3,8 @@ package wybory.osoba.wyborca;
 import wybory.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.partia.Partia;
-import wybory.pomoce.Pomoce;
 
 import java.util.List;
-import java.util.Objects;
 
 import static wybory.pomoce.Pomoce.wybierzLosowy;
 

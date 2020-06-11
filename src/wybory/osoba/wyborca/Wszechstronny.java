@@ -2,13 +2,11 @@ package wybory.osoba.wyborca;
 
 import wybory.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
-import wybory.pomoce.Pomoce;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.List;
-import java.util.Objects;
 
 import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 

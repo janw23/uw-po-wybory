@@ -21,7 +21,7 @@ public class Głosowanie {
 
     public Głosowanie(MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
         this.metodaLiczeniaGłosów = metodaLiczeniaGłosów;
-        wybraniKandydaciWyborców = new HashMap<>();  //@todo Lepsze LinkedList???
+        wybraniKandydaciWyborców = new HashMap<>();
         liczbaGłosówNaKandydatówWOkręgach = new HashMap<>();
         mandatyUzyskanePrzezPartie = new HashMap<>();
         mandatyUzyskanePrzezPartieWOkręgach = new HashMap<>();
@@ -39,12 +39,10 @@ public class Głosowanie {
     private void przeprowadźGłosowanieWOkręgu(OkręgWyborczy okręg) {
         assert okręg.jestGłówny();
 
-        //@todo czy funkcja w definicji pętli wywoływana jest raz czy wielokrotnie?
         for (Wyborca wyborca : okręg.wyborcy(true)) {
             Kandydat wybranyKandydat = wyborca.wybranyKandydat();
 
             assert ważnyGłos(wybranyKandydat, wyborca);
-            boolean temp =!wybraniKandydaciWyborców.containsKey(wyborca);
             assert !wybraniKandydaciWyborców.containsKey(wyborca);
 
             wybraniKandydaciWyborców.put(wyborca, wybranyKandydat);
@@ -68,7 +66,6 @@ public class Głosowanie {
         przeliczGłosyNaKandydatów();
         assert zgodnaLiczbaGłosów();
         przeliczGłosyNaMandatyWOkręgach();
-        //@todo Dopisać asercję uzyskanych mandatów
     }
 
     //funkcja do upewnienia się, że wszystkie głosy zostały policzone

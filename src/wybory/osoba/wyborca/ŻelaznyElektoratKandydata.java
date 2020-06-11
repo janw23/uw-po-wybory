@@ -5,9 +5,6 @@ import wybory.osoba.kandydat.Kandydat;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
-import static java.util.Arrays.asList;
 
 public class ŻelaznyElektoratKandydata extends Wyborca implements Jednokandydatowy {
 

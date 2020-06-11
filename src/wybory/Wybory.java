@@ -96,24 +96,6 @@ public class Wybory {
         scalOkręgi();
     }
 
-    //konstruktor tworzący kopię
-    public Wybory(Wybory wybory) {
-        //głębokie (do pewnego stopnia) kopie, ponieważ te obiekty mogą ulegać zmianie
-        okręgiWyborcze = new OkręgWyborczy[wybory.okręgiWyborcze.length];
-        partie = new Partia[wybory.partie.length];
-
-        for (int i = 0; i < okręgiWyborcze.length; i++)
-            okręgiWyborcze[i] = new OkręgWyborczy(wybory.okręgiWyborcze[i]);
-
-        for (int i = 0; i < partie.length; i++)
-            partie[i] = new Partia(wybory.partie[i]);
-
-        //pozostałym wystarczą płytkie kopie, bo nie są modyfikowane
-        działaniaKampanijne = Arrays.copyOf(wybory.działaniaKampanijne, wybory.działaniaKampanijne.length);
-        liczbaCechKandydatów = wybory.liczbaCechKandydatów;
-        scalenia = List.copyOf(wybory.scalenia);
-    }
-
     private void scalOkręgi() {
         for (Para<Integer, Integer> scalenie : scalenia) {
             assert scalenie.drugi() == scalenie.pierwszy() + 1;
@@ -213,8 +195,7 @@ public class Wybory {
             //wypisanie danych okręgu
             for (OkręgWyborczy okręg : wybory.okręgiGłówne()) {
                 //numer okręgu
-                rezultat.append("numer okręgu: ")
-                        .append(okręg.numerOkręgu(true)).append("\n");
+                rezultat.append(okręg.numerOkręgu(true)).append("\n");
 
                 //dane wyborców
                 for (Wyborca wyborca : okręg.wyborcy(true))
@@ -240,16 +221,15 @@ public class Wybory {
             Kandydat wybranyKandydat = głosowanie.wybranyKandydatWyborcy(wyborca);
             assert wybranyKandydat != null;
 
-            return "wyborca: " + wyborca.imię() + " " + wyborca.nazwisko() +
-                    " głosował na: " + wybranyKandydat.imię() + " " + wybranyKandydat.nazwisko();
+            return wyborca.imię() + " " + wyborca.nazwisko() + " " +
+                    wybranyKandydat.imię() + " " + wybranyKandydat.nazwisko();
         }
 
         private String informacjeOKandydacie(Kandydat kandydat) {
             int uzyskaneGłosy = głosowanie.liczbaGłosówNaKandydata(kandydat);
-            return "kandydat: " + kandydat.imię() + " " + kandydat.nazwisko() +
-                    " z partii: " + kandydat.partia().nazwa() + " o numerze na liście: " +
-                    kandydat.pozycjaNaLiście(true) + " uzyskał głosy: " +
-                    uzyskaneGłosy;
+            return kandydat.imię() + " " + kandydat.nazwisko() + " " +
+                    kandydat.partia().nazwa() + " " +
+                    kandydat.pozycjaNaLiście(true) + " " + uzyskaneGłosy;
         }
 
         private String informacjeOMandatachPartii(Partia partia) {
@@ -297,8 +277,6 @@ public class Wybory {
         //drugi wiersz wejścia
         private static void wczytajScalenia(Wybory wybory, Scanner sc) {
             int liczbaScaleń = sc.nextInt();
-
-            //@todo Rozważyć coś innego zamiast ArrayList
             wybory.scalenia = new ArrayList<>(liczbaScaleń);
 
             for (int i = 0; i < liczbaScaleń; i++)

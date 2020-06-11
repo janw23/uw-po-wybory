@@ -4,7 +4,6 @@ import wybory.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class WyborcaJednocechowy extends Wyborca implements Jednocechowy {
 

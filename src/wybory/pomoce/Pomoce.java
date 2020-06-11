@@ -7,7 +7,7 @@ import java.util.*;
 public class Pomoce {
 
     public static <T1, T2> List<Para<T1, T2>> iloczynKartezjański(List<T1> A, List<T2> B) {
-        List<Para<T1, T2>> iloczyn = new ArrayList<>(A.size() * B.size());
+        List<Para<T1, T2>> iloczyn = new LinkedList<>();
 
         for (T1 elemA : A)
             for (T2 elemB : B)
@@ -37,7 +37,7 @@ public class Pomoce {
             return null;
 
         //wybieranie losowego elementu z najlepszych do zwrócenia
-        Random rand = new Random();
+        Random rand = new Random(0); //@todo Usunąć seed
         int index = rand.nextInt(najlepsze.size());
 
         while (index-- > 0)
@@ -47,16 +47,7 @@ public class Pomoce {
     }
 
     public static <T> T wybierzLosowy(List<T> elementy) {
-        Random rand = new Random();
+        Random rand = new Random(0); //@todo usunąć seed
         return elementy.get(rand.nextInt(elementy.size()));
-    }
-
-    public static <K, V> List<Para<K, V>> zamieńEntrySetNaListęPar(Set<Map.Entry<K, V>> wpisy) {
-        List<Para<K, V>> listaPar = new ArrayList<>(wpisy.size()); //@todo LinkedList?
-
-        for (var wpis : wpisy)
-            listaPar.add(new Para<>(wpis.getKey(), wpis.getValue()));
-
-        return listaPar;
     }
 }
