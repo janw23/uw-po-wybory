@@ -98,17 +98,20 @@ public class Wybory {
 
     //konstruktor tworzący kopię
     public Wybory(Wybory wybory) {
-        //głębokie kopie, ponieważ te obiekty mogą ulegać zmianie
-        //@todo Upewnić się, że to rzeczywiście jest głęboka kopia
-        okręgiWyborcze = wybory.okręgiWyborcze.clone();
-        partie = wybory.partie.clone();
+        //głębokie (do pewnego stopnia) kopie, ponieważ te obiekty mogą ulegać zmianie
+        okręgiWyborcze = new OkręgWyborczy[wybory.okręgiWyborcze.length];
+        partie = new Partia[wybory.partie.length];
 
-        //pozostałe cały czas w zasadzie są takie same jak na początku
+        for (int i = 0; i < okręgiWyborcze.length; i++)
+            okręgiWyborcze[i] = new OkręgWyborczy(wybory.okręgiWyborcze[i]);
+
+        for (int i = 0; i < partie.length; i++)
+            partie[i] = new Partia(wybory.partie[i]);
+
+        //pozostałym wystarczą płytkie kopie, bo nie są modyfikowane
         działaniaKampanijne = Arrays.copyOf(wybory.działaniaKampanijne, wybory.działaniaKampanijne.length);
         liczbaCechKandydatów = wybory.liczbaCechKandydatów;
         scalenia = List.copyOf(wybory.scalenia);
-
-        assert wybory.equals(this);
     }
 
     private void scalOkręgi() {
@@ -122,13 +125,16 @@ public class Wybory {
         }
     }
 
-    public void symulujWybory(List<MetodaLiczeniaGłosów> metodyGłosowania) {
-        //@todo Użyć Stringbuildera i zwrócić String?
+    public String symulujWybory(List<MetodaLiczeniaGłosów> metodyGłosowania) {
+        StringBuilder rezultat = new StringBuilder();
+
         for (MetodaLiczeniaGłosów metodaLiczeniaGłosów : metodyGłosowania) {
             Wybory wybory = new Wybory(this);
-            SymulacjaWyborów.przeprowadźWybory(wybory, metodaLiczeniaGłosów);
-            //@todo wybory.wypiszWynik() czy jakoś tak
+
+            WynikiWyborów wyniki = SymulacjaWyborów.przeprowadźWybory(wybory, metodaLiczeniaGłosów);
+            rezultat.append(wyniki.przedstawienieWyników());
         }
+        return rezultat.toString();
     }
 
     //okręgi główne to pojedyńcze okręgi lub te ze scalonych par, które mają mniejszy numer
@@ -140,33 +146,28 @@ public class Wybory {
         return okręgi;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wybory wybory = (Wybory) o;
-        return liczbaCechKandydatów == wybory.liczbaCechKandydatów &&
-                Arrays.equals(okręgiWyborcze, wybory.okręgiWyborcze) &&
-                Arrays.equals(partie, wybory.partie) &&
-                Arrays.equals(działaniaKampanijne, wybory.działaniaKampanijne) &&
-                Objects.equals(scalenia, wybory.scalenia);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(liczbaCechKandydatów, scalenia);
-        result = 31 * result + Arrays.hashCode(okręgiWyborcze);
-        result = 31 * result + Arrays.hashCode(partie);
-        result = 31 * result + Arrays.hashCode(działaniaKampanijne);
-        return result;
-    }
-
     static class SymulacjaWyborów {
 
-        static void przeprowadźWybory(Wybory wybory, MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
+        static WynikiWyborów przeprowadźWybory(Wybory wybory, MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
             przeprowadźKampanię(wybory, metodaLiczeniaGłosów);
+
             Głosowanie głosowanie = przeprowadźGłosowanie(wybory, metodaLiczeniaGłosów);
             głosowanie.przeliczGłosy();
+            assert przyznanoWszystkieMandaty(głosowanie, wybory);
+
+            return new WynikiWyborów(wybory, głosowanie);
+        }
+
+        private static boolean przyznanoWszystkieMandaty(Głosowanie głosowanie, Wybory wybory) {
+            int suma = 0;
+
+            for (OkręgWyborczy okręg : wybory.okręgiWyborcze)
+                suma += okręg.liczbaMandatów(false);
+
+            for (Partia partia : wybory.partie)
+                suma -= głosowanie.liczbaMandatówUzyskanychPrzezPartię(partia);
+
+            return suma == 0;
         }
 
         private static void przeprowadźKampanię(Wybory wybory,
@@ -186,13 +187,82 @@ public class Wybory {
         }
 
         private static Głosowanie przeprowadźGłosowanie(Wybory wybory,
-                                                  MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
+                                                        MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
             List<OkręgWyborczy> okręgiGłówne = wybory.okręgiGłówne();
 
             Głosowanie głosowanie = new Głosowanie(metodaLiczeniaGłosów);
             głosowanie.przeprowadźGłosowanieWOkręgach(okręgiGłówne);
 
             return głosowanie;
+        }
+    }
+
+    private static class WynikiWyborów {
+
+        private final Wybory wybory;
+        private final Głosowanie głosowanie;
+
+        public WynikiWyborów(Wybory wybory, Głosowanie głosowanie) {
+            this.wybory = wybory;
+            this.głosowanie = głosowanie;
+        }
+
+        public String przedstawienieWyników() {
+            StringBuilder rezultat = new StringBuilder();
+
+            //nazwa metody liczenia głosów
+            rezultat.append(głosowanie.metodaLiczeniaGłosów().nazwa()).append("\n");
+
+            //wypisanie danych okręgu
+            for (OkręgWyborczy okręg : wybory.okręgiGłówne()) {
+                //numer okręgu
+                rezultat.append("numer okręgu: ")
+                        .append(okręg.numerOkręgu(true)).append("\n");
+
+                //dane wyborców
+                for (Wyborca wyborca : okręg.wyborcy(true))
+                    rezultat.append(informacjeOWyborcy(wyborca)).append("\n");
+
+                //dane kandydatów
+                for (Kandydat kandydat : okręg.kandydaci(true))
+                    rezultat.append(informacjeOKandydacie(kandydat)).append("\n");
+
+                //pary (nazwa partii, liczba mandatów w tym okręgu)
+                for (Partia partia : wybory.partie)
+                    rezultat.append(informacjeOMandatachPartii(partia, okręg)).append("\n");
+            }
+
+            //pary (nazwa partii, łączna liczba mandatów)
+            for (Partia partia : wybory.partie)
+                rezultat.append(informacjeOMandatachPartii(partia)).append("\n");
+
+            return rezultat.toString();
+        }
+
+        private String informacjeOWyborcy(Wyborca wyborca) {
+            Kandydat wybranyKandydat = głosowanie.wybranyKandydatWyborcy(wyborca);
+            assert wybranyKandydat != null;
+
+            return "wyborca: " + wyborca.imię() + " " + wyborca.nazwisko() +
+                    " głosował na: " + wybranyKandydat.imię() + " " + wybranyKandydat.nazwisko();
+        }
+
+        private String informacjeOKandydacie(Kandydat kandydat) {
+            int uzyskaneGłosy = głosowanie.liczbaGłosówNaKandydata(kandydat);
+            return "kandydat: " + kandydat.imię() + " " + kandydat.nazwisko() +
+                    " z partii: " + kandydat.partia().nazwa() + " o numerze na liście: " +
+                    kandydat.pozycjaNaLiście(true) + " uzyskał głosy: " +
+                    uzyskaneGłosy;
+        }
+
+        private String informacjeOMandatachPartii(Partia partia) {
+            int liczbaMandatów = głosowanie.liczbaMandatówUzyskanychPrzezPartię(partia);
+            return "(" + partia.nazwa() + ", " + liczbaMandatów + ")";
+        }
+
+        private String informacjeOMandatachPartii(Partia partia, OkręgWyborczy okręg) {
+            int liczbaMandatów = głosowanie.liczbaMandatówUzyskanychPrzezPartięWOkręgu(partia, okręg);
+            return "(" + partia.nazwa() + ", " + liczbaMandatów + ")";
         }
     }
 
@@ -377,7 +447,7 @@ public class Wybory {
                         wagiCech = wczytajWektor(wybory.liczbaCechKandydatów, 100, sc);
 
                     if (jednocechowy(typWyborcy))
-                        wybranaCecha = sc.nextInt();
+                        wybranaCecha = sc.nextInt() - 1;
 
                     if (jednopartyjny(typWyborcy) || jednokandydatowy(typWyborcy)) {
                         partia = znajdźPartięONazwie(wybory, sc.next());
@@ -391,8 +461,8 @@ public class Wybory {
                         }
                     }
 
-                    Wyborca wyborca = utwórzWyborcę
-                            (imię, nazwisko, okręgWyborczy, typWyborcy,
+                    Wyborca wyborca =
+                            utwórzWyborcę(imię, nazwisko, okręgWyborczy, typWyborcy,
                                     partia, kandydat, wagiCech, wybranaCecha);
 
                     okręgWyborczy.dodajWyborcę(wyborca);

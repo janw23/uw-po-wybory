@@ -10,8 +10,8 @@ import java.util.Objects;
 public abstract class WyborcaJednocechowopartyjny
         extends Wyborca implements Jednocechowy, Jednopartyjny {
 
-    private final Partia uwielbionaPartia;
-    private final int uwielbionaCecha;
+    protected final Partia uwielbionaPartia;
+    protected final int uwielbionaCecha;
 
     public WyborcaJednocechowopartyjny(String imię, String nazwisko,
                                        OkręgWyborczy okręgWyborczy,
@@ -21,8 +21,7 @@ public abstract class WyborcaJednocechowopartyjny
         super(imię, nazwisko, okręgWyborczy);
         Objects.requireNonNull(uwielbionaPartia);
         this.uwielbionaPartia = uwielbionaPartia;
-        assert uwielbionaCecha > 0;
-        this.uwielbionaCecha = uwielbionaCecha - 1;
+        this.uwielbionaCecha = uwielbionaCecha;
     }
 
     public Partia uwielbionaPartia() {

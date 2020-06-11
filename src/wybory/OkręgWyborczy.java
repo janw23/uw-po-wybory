@@ -28,6 +28,22 @@ public class OkręgWyborczy {
         kandydaci = new ArrayList<>();
     }
 
+    public OkręgWyborczy(OkręgWyborczy okręgWyborczy) {
+        this.numer = okręgWyborczy.numer;
+        this.scalonyZ = okręgWyborczy.scalonyZ;
+        this.liczbaWyborców = okręgWyborczy.liczbaWyborców;
+
+        List<Wyborca> wyborcy = new ArrayList<>(okręgWyborczy.wyborcy.size());
+
+        for (Wyborca wyborca : okręgWyborczy.wyborcy) {
+            wyborcy.add((Wyborca) wyborca.clone());
+            assert wyborca.clone().equals(wyborca);
+        }
+
+        this.wyborcy = wyborcy;
+        this.kandydaci = List.copyOf(okręgWyborczy.kandydaci);
+    }
+
     public boolean scalony() {
         return scalonyZ != null;
     }

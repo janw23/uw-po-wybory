@@ -1,7 +1,9 @@
 package wybory;
 
 import wybory.głosowanie.MetodaDHondta;
+import wybory.głosowanie.MetodaHareaNiemeyera;
 import wybory.głosowanie.MetodaLiczeniaGłosów;
+import wybory.głosowanie.MetodaSainteLague;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,14 +17,15 @@ public class Main {
 
         //@todo Try catch jeśli starczy czasu
         //@todo Zmienić na pierwszy argument programu
-        File plik = new File("/home/janw23/MIMUW/PO/Projects/uw-po-wybory/test2.in");//args[0]);
+        File plik = new File("/home/janw23/MIMUW/PO/Projects/uw-po-wybory/test1.in");//args[0]);
 
-        //@todo Napisać kolejne metody liczenia głosów
+        MetodaLiczeniaGłosów[] metodyLiczeniaGłosów =
+                {new MetodaDHondta(), new MetodaHareaNiemeyera(), new MetodaSainteLague()};
 
         try {
             Wybory wybory = new Wybory(plik);
-            wybory.symulujWybory(Arrays.asList(new MetodaLiczeniaGłosów[]{new MetodaDHondta()}));
-            //wypisz rezultat
+            String rezultat = wybory.symulujWybory(Arrays.asList(metodyLiczeniaGłosów));
+            System.out.println(rezultat);
 
         } catch (FileNotFoundException e) {
             System.err.println("Nie znaleziono pliku " + plik.getAbsolutePath());

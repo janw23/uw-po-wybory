@@ -7,7 +7,7 @@ import wybory.osoba.kandydat.Kandydat;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Wyborca extends Osoba {
+public abstract class Wyborca extends Osoba implements Cloneable {
 
     //numery typów odpowiadają treści zadania
     public static final int TYP_ŻELAZNY_ELEKTORAT_PARTYJNY = 1;
@@ -52,7 +52,7 @@ public abstract class Wyborca extends Osoba {
                 typ == TYP_WSZECHSTRONNY_JEDNOPARTYJNY;
     }
 
-    private final OkręgWyborczy okręgWyborczy;
+    protected final OkręgWyborczy okręgWyborczy;
 
     public Wyborca(String imię, String nazwisko, OkręgWyborczy okręgWyborczy) {
         super(imię, nazwisko);
@@ -70,4 +70,6 @@ public abstract class Wyborca extends Osoba {
 
         return okręgWyborczy.dajGłówny();
     }
+
+    public abstract Object clone();
 }

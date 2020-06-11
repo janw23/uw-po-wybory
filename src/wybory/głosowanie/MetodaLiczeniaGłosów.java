@@ -24,6 +24,8 @@ public abstract class MetodaLiczeniaGłosów {
         return liczbaGłosówNaPartie;
     }
 
+    public abstract String nazwa();
+
     private boolean zgodnaLiczbaGłosów(Map<Kandydat, Integer> głosyKandydatów, Map<Partia, Integer> głosyPartii) {
         int suma = 0;
 

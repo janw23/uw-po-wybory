@@ -4,9 +4,7 @@ import wybory.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
-import wybory.pomoce.para.Para;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +13,22 @@ import java.util.Map;
 public class Głosowanie {
 
     private final MetodaLiczeniaGłosów metodaLiczeniaGłosów;
-    private final List<Para<Wyborca, Kandydat>> głosy; //każdy głos na kandydata jest tu wpisywany
 
-    private final Map<OkręgWyborczy, HashMap<Kandydat, Integer>> liczbaGłosówNaKandydatówWOkręgach;
+    private final Map<Wyborca, Kandydat> wybraniKandydaciWyborców; //każdy głos na kandydata jest tu wpisywany
+    private final Map<OkręgWyborczy, Map<Kandydat, Integer>> liczbaGłosówNaKandydatówWOkręgach;
+    private final Map<OkręgWyborczy, Map<Partia, Integer>> mandatyUzyskanePrzezPartieWOkręgach;
     private final Map<Partia, Integer> mandatyUzyskanePrzezPartie;
 
     public Głosowanie(MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
         this.metodaLiczeniaGłosów = metodaLiczeniaGłosów;
-        głosy = new ArrayList<>();  //@todo Lepsze LinkedList???
+        wybraniKandydaciWyborców = new HashMap<>();  //@todo Lepsze LinkedList???
         liczbaGłosówNaKandydatówWOkręgach = new HashMap<>();
         mandatyUzyskanePrzezPartie = new HashMap<>();
+        mandatyUzyskanePrzezPartieWOkręgach = new HashMap<>();
+    }
+
+    public MetodaLiczeniaGłosów metodaLiczeniaGłosów() {
+        return metodaLiczeniaGłosów;
     }
 
     public void przeprowadźGłosowanieWOkręgach(List<OkręgWyborczy> okręgi) {
@@ -38,8 +42,12 @@ public class Głosowanie {
         //@todo czy funkcja w definicji pętli wywoływana jest raz czy wielokrotnie?
         for (Wyborca wyborca : okręg.wyborcy(true)) {
             Kandydat wybranyKandydat = wyborca.wybranyKandydat();
+
             assert ważnyGłos(wybranyKandydat, wyborca);
-            głosy.add(new Para<>(wyborca, wybranyKandydat));
+            boolean temp =!wybraniKandydaciWyborców.containsKey(wyborca);
+            assert !wybraniKandydaciWyborców.containsKey(wyborca);
+
+            wybraniKandydaciWyborców.put(wyborca, wybranyKandydat);
         }
     }
 
@@ -49,15 +57,18 @@ public class Głosowanie {
     }
 
     public void resetujGłosowanie() {
-        głosy.clear();
+        wybraniKandydaciWyborców.clear();
         liczbaGłosówNaKandydatówWOkręgach.clear();
         mandatyUzyskanePrzezPartie.clear();
+        wybraniKandydaciWyborców.clear();
+        mandatyUzyskanePrzezPartieWOkręgach.clear();
     }
 
     public void przeliczGłosy() {
         przeliczGłosyNaKandydatów();
         assert zgodnaLiczbaGłosów();
-        przeliczGłosyNaMandaty();
+        przeliczGłosyNaMandatyWOkręgach();
+        //@todo Dopisać asercję uzyskanych mandatów
     }
 
     //funkcja do upewnienia się, że wszystkie głosy zostały policzone
@@ -76,8 +87,8 @@ public class Głosowanie {
     }
 
     private void przeliczGłosyNaKandydatów() {
-        for (Para<Wyborca, Kandydat> głos : głosy) {
-            Kandydat kandydat = głos.drugi();
+        for (var głosWyborcy : wybraniKandydaciWyborców.entrySet()) {
+            Kandydat kandydat = głosWyborcy.getValue();
             OkręgWyborczy okręg = kandydat.okręgWyborczy(true);
 
             //szuka danych głosowania danego okręu, a jeśli ich nie ma, to tworzy nowe
@@ -99,12 +110,21 @@ public class Głosowanie {
         return głosyWOkręgu.getOrDefault(kandydat, 0);
     }
 
-    private void przeliczGłosyNaMandaty() {
+    public Kandydat wybranyKandydatWyborcy(Wyborca wyborca) {
+        return wybraniKandydaciWyborców.get(wyborca);
+    }
+
+    private void przeliczGłosyNaMandatyWOkręgach() {
         for (var daneOkręgu : liczbaGłosówNaKandydatówWOkręgach.entrySet()) {
+            OkręgWyborczy okręg = daneOkręgu.getKey();
 
             var mandatyPartii = metodaLiczeniaGłosów
-                    .obliczPrzydziałMandatówWOkręgu(daneOkręgu.getKey(), daneOkręgu.getValue());
+                    .obliczPrzydziałMandatówWOkręgu(okręg, daneOkręgu.getValue());
 
+            assert !mandatyUzyskanePrzezPartieWOkręgach.containsKey(okręg);
+            mandatyUzyskanePrzezPartieWOkręgach.put(okręg, mandatyPartii);
+
+            //dodawanie mandatów do wszystkich mandatów danej partii
             for (var mandaty : mandatyPartii.entrySet())
                 mandatyUzyskanePrzezPartie.merge(mandaty.getKey(), mandaty.getValue(), Integer::sum);
         }
@@ -113,5 +133,11 @@ public class Głosowanie {
     //wcześniej musi byc wywołane przelicz głosy na mandaty
     public int liczbaMandatówUzyskanychPrzezPartię(Partia partia) {
         return mandatyUzyskanePrzezPartie.getOrDefault(partia, 0);
+    }
+
+    public int liczbaMandatówUzyskanychPrzezPartięWOkręgu(Partia partia, OkręgWyborczy okręg) {
+        var mandatyWOkręgu = mandatyUzyskanePrzezPartieWOkręgach.get(okręg);
+        assert mandatyWOkręgu != null;
+        return mandatyWOkręgu.getOrDefault(partia, 0);
     }
 }

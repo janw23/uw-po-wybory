@@ -24,6 +24,12 @@ public class Partia {
         this.strategiaKampanii = strategiaKampanii;
     }
 
+    public Partia(Partia partia) {
+        this.nazwa = partia.nazwa;
+        this.budżetKampanii = partia.budżetKampanii;
+        this.strategiaKampanii = partia.strategiaKampanii;
+    }
+
     public String nazwa() {
         return nazwa;
     }
@@ -60,20 +66,5 @@ public class Partia {
 
         wykonajDziałanie(wybraneDziałanie);
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Partia partia = (Partia) o;
-        return budżetKampanii == partia.budżetKampanii &&
-                Objects.equals(nazwa, partia.nazwa) &&
-                Objects.equals(strategiaKampanii, partia.strategiaKampanii);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(nazwa, budżetKampanii, strategiaKampanii);
     }
 }

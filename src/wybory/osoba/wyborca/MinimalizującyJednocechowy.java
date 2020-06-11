@@ -6,6 +6,7 @@ import wybory.pomoce.Pomoce;
 import wybory.pomoce.Wartościowanie;
 
 import java.util.List;
+import java.util.Objects;
 
 import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 
@@ -31,4 +32,23 @@ public class MinimalizującyJednocechowy extends WyborcaJednocechowy {
 
         return wybierzNajlepszyLosowy(kandydaci, najniższaCecha);
     }
+
+    @Override
+    public Object clone() {
+        return new MinimalizującyJednocechowy(imię, nazwisko, okręgWyborczy, uwielbionaCecha);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MinimalizującyJednocechowy that = (MinimalizującyJednocechowy) o;
+        return uwielbionaCecha == that.uwielbionaCecha;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uwielbionaCecha);
+    }
+
 }

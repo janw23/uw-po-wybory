@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public abstract class WyborcaJednopartyjny extends Wyborca implements Jednopartyjny {
 
-    private final Partia uwielbionaPartia;
+    protected final Partia uwielbionaPartia;
 
     public WyborcaJednopartyjny(String imię, String nazwisko,
                                 OkręgWyborczy okręgWyborczy,

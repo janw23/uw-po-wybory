@@ -5,6 +5,7 @@ import wybory.osoba.kandydat.Kandydat;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 
@@ -33,5 +34,10 @@ public class ŻelaznyElektoratKandydata extends Wyborca implements Jednokandydat
     @Override
     List<Kandydat> rozważaniKandydaci() {
         return Collections.singletonList(uwielbionyKandydat());
+    }
+
+    @Override
+    public Object clone() {
+        return new ŻelaznyElektoratKandydata(imię, nazwisko, okręgWyborczy, uwielbionykandydat);
     }
 }

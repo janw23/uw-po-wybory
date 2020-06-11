@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public abstract class Osoba {
 
-    private String imię;
-    private String nazwisko;
+    protected String imię;
+    protected String nazwisko;
 
     public Osoba(String imię, String nazwisko) {
         Objects.requireNonNull(imię);

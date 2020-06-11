@@ -64,4 +64,17 @@ public class Wektor {
     public String toString() {
         return Arrays.toString(współrzędne);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wektor wektor = (Wektor) o;
+        return Arrays.equals(współrzędne, wektor.współrzędne);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(współrzędne);
+    }
 }
