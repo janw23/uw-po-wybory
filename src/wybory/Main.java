@@ -12,9 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //@todo Try catch jeśli starczy czasu
         //@todo Zmienić na pierwszy argument programu
-        File plik = new File("/home/janw23/MIMUW/PO/Projects/uw-po-wybory/test1.in");//args[0]);
+        File plik = new File("/home/janw23/MIMUW/PO/Projects/uw-po-wybory/test2.in");//args[0]);
 
         MetodaLiczeniaGłosów[] metodyLiczeniaGłosów =
                 {new MetodaDHondta(), new MetodaHareaNiemeyera(), new MetodaSainteLague()};

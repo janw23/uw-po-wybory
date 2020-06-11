@@ -6,15 +6,11 @@ import wybory.osoba.wyborca.Jednopartyjny;
 import wybory.osoba.wyborca.Wszechstronny;
 import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
-import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
-import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 
 public class StrategiaZachłanna extends StrategiaKampanii {
 
@@ -38,7 +34,7 @@ public class StrategiaZachłanna extends StrategiaKampanii {
     }
 
     //liczy sumę sum ważonych wyborców i kandydatów po wykonaniu działania
-    private int zmianaSumySumWażomych(DziałanieKampanijne działanie,
+    private int zmianaSumySumWażonych(DziałanieKampanijne działanie,
                                       List<Kandydat> kandydaci, List<Wszechstronny> wyborcy) {
         int suma = 0;
         int sumaPoZmianie = 0;
@@ -57,7 +53,6 @@ public class StrategiaZachłanna extends StrategiaKampanii {
 
             wyborca.wagiCech(stareWagi);
         }
-
         return sumaPoZmianie - suma;
     }
 
@@ -75,23 +70,13 @@ public class StrategiaZachłanna extends StrategiaKampanii {
 
             for (DziałanieKampanijne działanie : daneKampanii.działaniaKampanijne()) {
                 if (działanie.obliczKosztWykonania(okręg) <= pozostałyBudżet) {
-                    int zmianaSumySumWażomych = zmianaSumySumWażomych(działanie, kandydaciPartii, wyborcy);
-                    możliwości.add(new Para<>(zmianaSumySumWażomych, new Para<>(działanie, okręg)));
+                    int zmianaSumySumWażonych = zmianaSumySumWażonych(działanie, kandydaciPartii, wyborcy);
+                    możliwości.add(new Para<>(zmianaSumySumWażonych, new Para<>(działanie, okręg)));
                 }
             }
         }
 
         //wybieranie możliwości o największej sumie sum ważonych
-        Wartościowanie<Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>>> wartościowanie =
-                new Wartościowanie<>() {
-                    @Override
-                    public int wartość(Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>> o) {
-                        return o.pierwszy();
-                    }
-                };
-
-        var najlepszy = wybierzNajlepszyLosowy(możliwości, wartościowanie);
-
-        return najlepszy == null ? null : najlepszy.drugi();
+        return możliwośćONajwiększymWartościowaniu(możliwości);
     }
 }

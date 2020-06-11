@@ -37,7 +37,7 @@ public class Pomoce {
             return null;
 
         //wybieranie losowego elementu z najlepszych do zwrócenia
-        Random rand = new Random(0); //@todo Usunąć seed
+        Random rand = new Random();
         int index = rand.nextInt(najlepsze.size());
 
         while (index-- > 0)
@@ -47,7 +47,7 @@ public class Pomoce {
     }
 
     public static <T> T wybierzLosowy(List<T> elementy) {
-        Random rand = new Random(0); //@todo usunąć seed
+        Random rand = new Random();
         return elementy.get(rand.nextInt(elementy.size()));
     }
 }

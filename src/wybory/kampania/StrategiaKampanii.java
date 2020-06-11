@@ -1,20 +1,21 @@
 package wybory.kampania;
 
+import org.jetbrains.annotations.Nullable;
 import wybory.OkręgWyborczy;
+import wybory.osoba.wyborca.Wszechstronny;
+import wybory.osoba.wyborca.Wyborca;
 import wybory.partia.Partia;
+import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 import static wybory.pomoce.Pomoce.iloczynKartezjański;
+import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 
 public abstract class StrategiaKampanii {
-
-    public static final int STRATEGIA_Z_ROZMACHEM = 1;
-    public static final int STRATEGIA_SKROMNA = 2;
-    public static final int STRATEGIA_ZACHŁANNA = 3;
-    public static final int STRATEGIA_WŁASNA = 4; //@todo Zmienić nazwę?
 
     //wykonuje najlepsze działanie kampanijne według danej strategii
     public abstract Para<DziałanieKampanijne, OkręgWyborczy>
@@ -37,4 +38,30 @@ public abstract class StrategiaKampanii {
         return możliwości;
     }
 
+    List<Wszechstronny> wyborcyWszechstronniSpełniającyPredykat(OkręgWyborczy okręg,
+                                                                Predicate<Wszechstronny> predykat) {
+        List<Wszechstronny> wyborcy = new ArrayList<>();
+
+        for (Wyborca wyborca : okręg.wyborcy(true))
+            if (wyborca instanceof Wszechstronny && predykat.test((Wszechstronny) wyborca))
+                wyborcy.add((Wszechstronny) wyborca);
+
+        return wyborcy;
+    }
+
+    static Para<DziałanieKampanijne, OkręgWyborczy> możliwośćONajwiększymWartościowaniu
+            (List<Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>>> możliwości) {
+
+        Wartościowanie<Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>>> wartościowanie =
+                new Wartościowanie<>() {
+                    @Override
+                    public int wartość(Para<Integer, Para<DziałanieKampanijne, OkręgWyborczy>> o) {
+                        return o.pierwszy();
+                    }
+                };
+
+        var najlepszy = wybierzNajlepszyLosowy(możliwości, wartościowanie);
+
+        return najlepszy == null ? null : najlepszy.drugi();
+    }
 }
