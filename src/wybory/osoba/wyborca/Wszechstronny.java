@@ -65,17 +65,4 @@ public class Wszechstronny extends Wyborca {
         WektorOgraniczony noweWagi = new WektorOgraniczony(this.wagiCech);
         return new Wszechstronny(imię, nazwisko, okręgWyborczy, noweWagi);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wszechstronny that = (Wszechstronny) o;
-        return Objects.equals(wagiCech, that.wagiCech);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(wagiCech);
-    }
 }

@@ -35,10 +35,8 @@ public class OkręgWyborczy {
 
         List<Wyborca> wyborcy = new ArrayList<>(okręgWyborczy.wyborcy.size());
 
-        for (Wyborca wyborca : okręgWyborczy.wyborcy) {
+        for (Wyborca wyborca : okręgWyborczy.wyborcy)
             wyborcy.add((Wyborca) wyborca.clone());
-            assert wyborca.clone().equals(wyborca);
-        }
 
         this.wyborcy = wyborcy;
         this.kandydaci = List.copyOf(okręgWyborczy.kandydaci);

@@ -125,15 +125,12 @@ public class Wybory {
         }
     }
 
-    public String symulujWybory(List<MetodaLiczeniaGłosów> metodyGłosowania) {
+    public String przeprowadźSymulację(MetodaLiczeniaGłosów metodaLiczeniaGłosów) {
         StringBuilder rezultat = new StringBuilder();
 
-        for (MetodaLiczeniaGłosów metodaLiczeniaGłosów : metodyGłosowania) {
-            Wybory wybory = new Wybory(this);
+        WynikiWyborów wyniki = SymulacjaWyborów.przeprowadźWybory(this, metodaLiczeniaGłosów);
+        rezultat.append(wyniki.przedstawienieWyników());
 
-            WynikiWyborów wyniki = SymulacjaWyborów.przeprowadźWybory(wybory, metodaLiczeniaGłosów);
-            rezultat.append(wyniki.przedstawienieWyników());
-        }
         return rezultat.toString();
     }
 

@@ -55,18 +55,4 @@ public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopa
         WektorOgraniczony noweWagi = new WektorOgraniczony(this.wagiCech);
         return new WszechstronnyJednopartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia, noweWagi);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WszechstronnyJednopartyjny that = (WszechstronnyJednopartyjny) o;
-        return Objects.equals(uwielbionaPartia, that.uwielbionaPartia) &&
-                Objects.equals(wagiCech, that.wagiCech);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uwielbionaPartia, wagiCech);
-    }
 }

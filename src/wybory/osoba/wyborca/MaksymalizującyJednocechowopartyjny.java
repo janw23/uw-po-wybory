@@ -40,18 +40,4 @@ public class MaksymalizującyJednocechowopartyjny extends WyborcaJednocechowopar
     public Object clone() {
         return new MaksymalizującyJednocechowopartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia, uwielbionaCecha);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WyborcaJednocechowopartyjny that = (WyborcaJednocechowopartyjny) o;
-        return uwielbionaCecha == that.uwielbionaCecha &&
-                uwielbionaPartia.equals(that.uwielbionaPartia);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uwielbionaCecha, uwielbionaPartia);
-    }
 }

@@ -40,20 +40,4 @@ public class MinimalizującyJednocechowopartyjny extends WyborcaJednocechowopart
     public Object clone() {
         return new MinimalizującyJednocechowopartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia, uwielbionaCecha);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MinimalizującyJednocechowopartyjny that = (MinimalizującyJednocechowopartyjny) o;
-        return uwielbionaCecha == that.uwielbionaCecha &&
-                uwielbionaPartia.equals(that.uwielbionaPartia);
-        //@todo equals dla partii
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uwielbionaCecha, uwielbionaPartia);
-    }
-
 }

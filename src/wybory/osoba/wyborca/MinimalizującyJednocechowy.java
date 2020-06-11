@@ -37,18 +37,4 @@ public class MinimalizującyJednocechowy extends WyborcaJednocechowy {
     public Object clone() {
         return new MinimalizującyJednocechowy(imię, nazwisko, okręgWyborczy, uwielbionaCecha);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MinimalizującyJednocechowy that = (MinimalizującyJednocechowy) o;
-        return uwielbionaCecha == that.uwielbionaCecha;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uwielbionaCecha);
-    }
-
 }

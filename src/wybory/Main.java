@@ -23,9 +23,11 @@ public class Main {
                 {new MetodaDHondta(), new MetodaHareaNiemeyera(), new MetodaSainteLague()};
 
         try {
-            Wybory wybory = new Wybory(plik);
-            String rezultat = wybory.symulujWybory(Arrays.asList(metodyLiczeniaGłosów));
-            System.out.println(rezultat);
+            for (var metodaLiczeniaGłosów : metodyLiczeniaGłosów) {
+                Wybory wybory = new Wybory(plik);
+                String rezultat = wybory.przeprowadźSymulację(metodaLiczeniaGłosów);
+                System.out.println(rezultat);
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("Nie znaleziono pliku " + plik.getAbsolutePath());
