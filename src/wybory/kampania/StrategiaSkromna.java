@@ -1,7 +1,7 @@
 package wybory.kampania;
 
-import wybory.OkręgWyborczy;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.OkręgWyborczy;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
 

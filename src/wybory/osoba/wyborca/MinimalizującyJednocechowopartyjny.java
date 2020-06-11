@@ -1,8 +1,8 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.Wartościowanie;
 
 import java.util.List;
@@ -32,10 +32,5 @@ public class MinimalizującyJednocechowopartyjny extends WyborcaJednocechowopart
         };
 
         return wybierzNajlepszyLosowy(kandydaci, najniższaCecha);
-    }
-
-    @Override
-    public Object clone() {
-        return new MinimalizującyJednocechowopartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia, uwielbionaCecha);
     }
 }

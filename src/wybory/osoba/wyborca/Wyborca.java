@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.Osoba;
 import wybory.osoba.kandydat.Kandydat;
 
@@ -70,6 +70,4 @@ public abstract class Wyborca extends Osoba implements Cloneable {
 
         return okręgWyborczy.dajGłówny();
     }
-
-    public abstract Object clone();
 }

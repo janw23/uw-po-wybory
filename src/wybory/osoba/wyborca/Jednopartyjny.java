@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 
 public interface Jednopartyjny {
     Partia uwielbionaPartia();

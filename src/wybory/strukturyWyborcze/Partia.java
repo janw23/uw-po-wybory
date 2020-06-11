@@ -1,13 +1,11 @@
-package wybory.partia;
+package wybory.strukturyWyborcze;
 
-import wybory.OkręgWyborczy;
 import wybory.kampania.DaneKampanii;
 import wybory.kampania.DziałanieKampanijne;
 import wybory.kampania.StrategiaKampanii;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.pomoce.para.Para;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -18,7 +16,6 @@ public class Partia {
     private final StrategiaKampanii strategiaKampanii;
 
     public Partia(String nazwa, int budżetKampanii, StrategiaKampanii strategiaKampanii) {
-
         this.nazwa = nazwa;
         this.budżetKampanii = budżetKampanii;
         this.strategiaKampanii = strategiaKampanii;
@@ -36,8 +33,10 @@ public class Partia {
 
     public List<Kandydat> kandydaciWOkręgu(OkręgWyborczy okręg) {
         Predicate<Kandydat> nieZTejPartii = kandydat -> !kandydat.należyDoPartii(this);
+
         List<Kandydat> kandydaci = new LinkedList<>(okręg.kandydaci(true));
         kandydaci.removeIf(nieZTejPartii);
+
         return kandydaci;
     }
 
@@ -49,8 +48,10 @@ public class Partia {
 
     private void wykonajDziałanie(Para<DziałanieKampanijne, OkręgWyborczy> działanie) {
         OkręgWyborczy okręg = działanie.drugi();
+
         budżetKampanii -= działanie.pierwszy().obliczKosztWykonania(okręg);
         assert budżetKampanii >= 0;
+
         działanie.pierwszy().wykonajNa(okręg);
     }
 

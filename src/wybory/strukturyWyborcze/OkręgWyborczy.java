@@ -1,8 +1,7 @@
-package wybory;
+package wybory.strukturyWyborcze;
 
 import wybory.osoba.kandydat.Kandydat;
 import wybory.osoba.wyborca.Wyborca;
-import wybory.partia.Partia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -1,9 +1,9 @@
 package wybory.głosowanie;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.osoba.wyborca.Wyborca;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 
 import java.util.HashMap;
 import java.util.List;

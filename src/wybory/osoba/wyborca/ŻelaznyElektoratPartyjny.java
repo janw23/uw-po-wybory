@@ -1,8 +1,8 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 
 import java.util.List;
 
@@ -21,10 +21,4 @@ public class ŻelaznyElektoratPartyjny extends WyborcaJednopartyjny {
         List<Kandydat> kandydaci = rozważaniKandydaci();
         return wybierzLosowy(kandydaci);
     }
-
-    @Override
-    public Object clone() {
-        return new ŻelaznyElektoratPartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia);
-    }
-
 }

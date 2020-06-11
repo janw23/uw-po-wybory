@@ -2,7 +2,10 @@ package wybory.pomoce;
 
 import wybory.pomoce.para.Para;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Stack;
 
 public class Pomoce {
 

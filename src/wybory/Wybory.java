@@ -5,13 +5,17 @@ import wybory.głosowanie.MetodaLiczeniaGłosów;
 import wybory.kampania.*;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.osoba.wyborca.*;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.OkręgWyborczy;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.para.Para;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.function.Predicate;
 
 import static java.util.Arrays.asList;
@@ -24,7 +28,7 @@ class FileReadingException extends Exception {
 }
 
 class UnknownCampaignStrategyException extends Exception {
-    private char znakStrategii;
+    private final char znakStrategii;
 
     public UnknownCampaignStrategyException(char znakStrategii) {
         this.znakStrategii = znakStrategii;
@@ -37,7 +41,7 @@ class UnknownCampaignStrategyException extends Exception {
 }
 
 class UnknownPoliticalPartyException extends Exception {
-    private String nazwaPartii;
+    private final String nazwaPartii;
 
     public UnknownPoliticalPartyException(String nazwaPartii) {
         this.nazwaPartii = nazwaPartii;
@@ -50,7 +54,7 @@ class UnknownPoliticalPartyException extends Exception {
 }
 
 class UnknownPoliticalVoterException extends Exception {
-    private int typ;
+    private final int typ;
 
     public UnknownPoliticalVoterException(int typ) {
         this.typ = typ;
@@ -88,9 +92,7 @@ public class Wybory {
     private int liczbaCechKandydatów;
     private List<Para<Integer, Integer>> scalenia;
 
-    public Wybory(File plik)
-            throws FileReadingException, FileNotFoundException {
-
+    public Wybory(File plik) throws FileReadingException, FileNotFoundException {
         super();
         WczytywaczDanych.wczytajWyboryZPliku(this, plik);
         scalOkręgi();
@@ -99,10 +101,13 @@ public class Wybory {
     private void scalOkręgi() {
         for (Para<Integer, Integer> scalenie : scalenia) {
             assert scalenie.drugi() == scalenie.pierwszy() + 1;
+
             OkręgWyborczy okręgA = okręgiWyborcze[scalenie.pierwszy() - 1];
             OkręgWyborczy okręgB = okręgiWyborcze[scalenie.drugi() - 1];
+
             assert okręgA.numerOkręgu(false) == scalenie.pierwszy();
             assert okręgB.numerOkręgu(false) == scalenie.drugi();
+
             OkręgWyborczy.scal(okręgA, okręgB);
         }
     }
@@ -284,9 +289,7 @@ public class Wybory {
         }
 
         //trzeci, czwarty i piąty wiersz wejścia
-        private static void wczytajPartie(Wybory wybory, Scanner sc)
-                throws UnknownCampaignStrategyException {
-
+        private static void wczytajPartie(Wybory wybory, Scanner sc) throws UnknownCampaignStrategyException {
             String[] nazwy = new String[wybory.partie.length];
             int[] budżety = new int[wybory.partie.length];
             char[] strategie = new char[wybory.partie.length];
@@ -327,9 +330,7 @@ public class Wybory {
                         new OkręgWyborczy(i + 1, sc.nextInt());
         }
 
-        private static WektorOgraniczony wczytajWektor
-                (int rozmiar, int ograniczenie, Scanner sc) {
-
+        private static WektorOgraniczony wczytajWektor(int rozmiar, int ograniczenie, Scanner sc) {
             WektorOgraniczony w = new WektorOgraniczony(rozmiar, ograniczenie);
 
             for (int i = 0; i < rozmiar; i++)
@@ -365,8 +366,8 @@ public class Wybory {
                         assert numerOkręgu == okręgWyborczy.numerOkręgu(false);
                         assert nazwaPartii.equals(partia.nazwa());
 
-                        Kandydat kandydat = new Kandydat(imię, nazwisko,
-                                okręgWyborczy, partia, pozycjaNaLiście, cechy);
+                        Kandydat kandydat = new Kandydat
+                                (imię, nazwisko, okręgWyborczy, partia, pozycjaNaLiście, cechy);
 
                         okręgWyborczy.dodajKandydata(kandydat);
                     }
@@ -436,8 +437,8 @@ public class Wybory {
                         }
                     }
 
-                    Wyborca wyborca =
-                            utwórzWyborcę(imię, nazwisko, okręgWyborczy, typWyborcy,
+                    Wyborca wyborca = utwórzWyborcę
+                            (imię, nazwisko, okręgWyborczy, typWyborcy,
                                     partia, kandydat, wagiCech, wybranaCecha);
 
                     okręgWyborczy.dodajWyborcę(wyborca);
@@ -447,8 +448,7 @@ public class Wybory {
 
         private static void wczytajDziałaniaKampanijne(Wybory wybory, Scanner sc) {
             for (int i = 0; i < wybory.działaniaKampanijne.length; i++) {
-                WektorOgraniczony zmianyWag =
-                        wczytajWektor(wybory.liczbaCechKandydatów, 10, sc);
+                WektorOgraniczony zmianyWag = wczytajWektor(wybory.liczbaCechKandydatów, 10, sc);
                 wybory.działaniaKampanijne[i] = new DziałanieKampanijne(zmianyWag);
             }
         }

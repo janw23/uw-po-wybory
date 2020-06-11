@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 
 import java.util.List;

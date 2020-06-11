@@ -1,14 +1,11 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
-import wybory.partia.Partia;
-import wybory.pomoce.Wartościowanie;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.wektor.WektorOgraniczony;
 
 import java.util.List;
-
-import static wybory.pomoce.Pomoce.wybierzNajlepszyLosowy;
 
 public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopartyjny {
 
@@ -32,11 +29,5 @@ public class WszechstronnyJednopartyjny extends Wszechstronny implements Jednopa
     List<Kandydat> rozważaniKandydaci() {
         return okręgWyborczy(true)
                 .kandydaciNależącyDoPartii(uwielbionaPartia(), true);
-    }
-
-    @Override
-    public Object clone() {
-        WektorOgraniczony noweWagi = new WektorOgraniczony(this.wagiCech);
-        return new WszechstronnyJednopartyjny(imię, nazwisko, okręgWyborczy, uwielbionaPartia, noweWagi);
     }
 }

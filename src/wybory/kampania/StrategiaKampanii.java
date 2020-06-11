@@ -1,10 +1,9 @@
 package wybory.kampania;
 
-import org.jetbrains.annotations.Nullable;
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.wyborca.Wszechstronny;
 import wybory.osoba.wyborca.Wyborca;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.para.Para;
 

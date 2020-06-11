@@ -1,6 +1,6 @@
 package wybory.kampania;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.głosowanie.MetodaLiczeniaGłosów;
 
 import java.util.List;

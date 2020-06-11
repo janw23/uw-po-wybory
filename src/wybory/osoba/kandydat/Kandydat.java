@@ -1,18 +1,16 @@
 package wybory.osoba.kandydat;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.Osoba;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;
-
-import java.util.Objects;
 
 public class Kandydat extends Osoba {
     private final Partia partia;
     private final OkręgWyborczy okręgWyborczy;
     private final int pozycjaNaLiście;
-    private WektorOgraniczony cechy;
+    private final WektorOgraniczony cechy;
 
     public Kandydat(String imię, String nazwisko,
                     OkręgWyborczy okręgWyborczy,
@@ -50,21 +48,5 @@ public class Kandydat extends Osoba {
             return okręgWyborczy;
 
         return okręgWyborczy.dajGłówny();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Kandydat kandydat = (Kandydat) o;
-        return pozycjaNaLiście == kandydat.pozycjaNaLiście &&
-                Objects.equals(partia, kandydat.partia) &&
-                Objects.equals(okręgWyborczy, kandydat.okręgWyborczy) &&
-                Objects.equals(cechy, kandydat.cechy);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(partia, okręgWyborczy, pozycjaNaLiście, cechy);
     }
 }

@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.pomoce.Wartościowanie;
 
@@ -30,10 +30,5 @@ public class MaksymalizującyJednocechowy extends WyborcaJednocechowy {
         };
 
         return wybierzNajlepszyLosowy(kandydaci, najwyższaCecha);
-    }
-
-    @Override
-    public Object clone() {
-        return new MaksymalizującyJednocechowy(imię, nazwisko, okręgWyborczy, uwielbionaCecha);
     }
 }

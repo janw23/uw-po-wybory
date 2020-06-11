@@ -1,10 +1,9 @@
 package wybory.kampania;
 
-import wybory.OkręgWyborczy;
-import wybory.osoba.kandydat.Kandydat;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.wyborca.Jednopartyjny;
 import wybory.osoba.wyborca.Wszechstronny;
-import wybory.partia.Partia;
+import wybory.strukturyWyborcze.Partia;
 import wybory.pomoce.para.Para;
 import wybory.pomoce.wektor.Wektor;
 import wybory.pomoce.wektor.WektorOgraniczony;

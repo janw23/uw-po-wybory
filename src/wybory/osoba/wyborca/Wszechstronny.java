@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 import wybory.pomoce.Wartościowanie;
 import wybory.pomoce.wektor.Wektor;
@@ -56,11 +56,5 @@ public class Wszechstronny extends Wyborca {
     @Override
     List<Kandydat> rozważaniKandydaci() {
         return okręgWyborczy(true).kandydaci(true);
-    }
-
-    @Override
-    public Object clone() {
-        WektorOgraniczony noweWagi = new WektorOgraniczony(this.wagiCech);
-        return new Wszechstronny(imię, nazwisko, okręgWyborczy, noweWagi);
     }
 }

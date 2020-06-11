@@ -1,6 +1,6 @@
 package wybory.osoba.wyborca;
 
-import wybory.OkręgWyborczy;
+import wybory.strukturyWyborcze.OkręgWyborczy;
 import wybory.osoba.kandydat.Kandydat;
 
 import java.util.Collections;
@@ -31,10 +31,5 @@ public class ŻelaznyElektoratKandydata extends Wyborca implements Jednokandydat
     @Override
     List<Kandydat> rozważaniKandydaci() {
         return Collections.singletonList(uwielbionyKandydat());
-    }
-
-    @Override
-    public Object clone() {
-        return new ŻelaznyElektoratKandydata(imię, nazwisko, okręgWyborczy, uwielbionykandydat);
     }
 }
